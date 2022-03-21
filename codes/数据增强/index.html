@@ -437,20 +437,13 @@ var _hmt = _hmt || [];
           <aside class="sidebar__right sticky">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-cog"></i> On this page</h4></header>
-              
+              <ul class="toc__menu"><li><a href="#椒盐噪声">椒盐噪声</a></li><li><a href="#usm锐化增强">USM锐化增强</a></li><li><a href="#随机翻转">随机翻转</a></li><li><a href="#随机噪声">随机噪声</a></li><li><a href="#随机滤波">随机滤波</a></li><li><a href="#调整亮度与对比度">调整亮度与对比度</a></li><li><a href="#伽马变换">伽马变换</a></li></ul>
 
             </nav>
           </aside>
         
-        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">imutils</span>
-<span class="kn">import</span> <span class="nn">imutils.paths</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">cv2</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
-<span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">PIL.Image</span>
-
-<span class="k">def</span> <span class="nf">random_salt</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">salt_num</span><span class="p">,</span> <span class="n">diameter</span><span class="p">):</span>
+        <h1 id="椒盐噪声">椒盐噪声</h1>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">random_salt</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">salt_num</span><span class="p">,</span> <span class="n">diameter</span><span class="p">):</span>
     <span class="s">"""
     椒盐噪声
     :param im:
@@ -489,9 +482,10 @@ var _hmt = _hmt || [];
             <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">channels</span><span class="p">):</span>
                 <span class="n">tmp</span> <span class="o">=</span> <span class="n">im</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">j</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">channel</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">255</span> <span class="o">-</span> <span class="n">im</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">j</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">channel</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
                 <span class="n">im</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">j</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">channel</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+</code></pre></div></div>
 
-                
-<span class="k">def</span> <span class="nf">random_USM</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
+<h1 id="usm锐化增强">USM锐化增强</h1>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">random_USM</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
     <span class="s">"""
     USM锐化增强算法可以去除一些细小的干扰细节和图像噪声，比一般直接使用卷积锐化算子得到的图像更可靠。
         output = 原图像−w∗高斯滤波(原图像)/(1−w)
@@ -504,8 +498,10 @@ var _hmt = _hmt || [];
     <span class="n">blur</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">25</span><span class="p">)</span>
     <span class="n">img_sharp</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">addWeighted</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">blur</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">img_sharp</span>
+</code></pre></div></div>
 
-<span class="k">def</span> <span class="nf">random_flip</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<h1 id="随机翻转">随机翻转</h1>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">random_flip</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
     <span class="s">"""
     随机翻转
     :param img:
@@ -516,9 +512,10 @@ var _hmt = _hmt || [];
     <span class="n">mode</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">img</span><span class="o">=</span><span class="n">cv2</span><span class="p">.</span><span class="n">flip</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">img</span>
+</code></pre></div></div>
 
-
-<span class="k">def</span> <span class="nf">random_noise</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">rand_range</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">)):</span>
+<h1 id="随机噪声">随机噪声</h1>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">random_noise</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">rand_range</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">)):</span>
     <span class="s">"""
     随机噪声
     :param img:
@@ -531,9 +528,10 @@ var _hmt = _hmt || [];
     <span class="n">img</span> <span class="o">+=</span> <span class="n">nosie</span>
     <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">img</span>
+</code></pre></div></div>
 
-
-<span class="k">def</span> <span class="nf">ranndom_blur</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)):</span>
+<h1 id="随机滤波">随机滤波</h1>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">ranndom_blur</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)):</span>
     <span class="s">"""
     随机滤波
     :param img:
@@ -553,9 +551,10 @@ var _hmt = _hmt || [];
     <span class="k">elif</span> <span class="n">blur_index</span> <span class="o">==</span>  <span class="s">'box'</span><span class="p">:</span>  <span class="c1"># 盒滤波器
 </span>        <span class="n">blur_func</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">boxFilter</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ksize</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">blur_func</span>
+</code></pre></div></div>
 
-
-<span class="k">def</span> <span class="nf">adjust_contrast_bright</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">contrast</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">brightness</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<h1 id="调整亮度与对比度">调整亮度与对比度</h1>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">adjust_contrast_bright</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">contrast</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">brightness</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
     <span class="s">"""
     调整亮度与对比度
     dst = img * contrast + brightness
@@ -567,9 +566,10 @@ var _hmt = _hmt || [];
     <span class="c1"># 像素值会超过0-255， 因此需要截断
 </span>    <span class="n">brightness</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">((</span><span class="n">contrast</span> <span class="o">*</span> <span class="n">img</span> <span class="o">+</span> <span class="n">brightness</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+</code></pre></div></div>
 
-
-<span class="k">def</span> <span class="nf">gamma_transform</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<h1 id="伽马变换">伽马变换</h1>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">gamma_transform</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
     <span class="s">"""
     https://blog.csdn.net/zfjBIT/article/details/85113946
     伽马变换就是用来图像增强，其提升了暗部细节，简单来说就是通过非线性变换，

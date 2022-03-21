@@ -459,21 +459,21 @@ var _hmt = _hmt || [];
 
 <h1 id="统计多通道">统计多通道</h1>
 
-<p>```python
-def get_rgb_hist(image):<br />
-    graph_img = np.zeros((500,256,3))
-    bins = np.arange(256).reshape(256,1) #直方图中各bin的顶点位置<br />
-    for ch, color in enumerate([(255,0,0),(0,255,0),(0,0,255)]):<br />
-        # 图片, 使用的通道, mask, HistSize, 直方图柱的范围
-        origin_hist = cv2.calcHist([img],[ch],None,[256],[0,256])<br />
-        # 归一化 src, dst, min, max, norm_type
-        cv2.normalize(origin_hist, origin_hist,0,500*0.9,cv2.NORM_MINMAX)<br />
-        hist=np.int32(np.around(origin_hist))<br />
-        # 矩阵转置
-        pts = np.column_stack((bins,hist))<br />
-        # False表示折线不需要闭合
-        cv2.polylines(graph_img,[pts],False,color)<br />
-    return graph_img</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_rgb_hist</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>  
+    <span class="n">graph_img</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">500</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">256</span><span class="p">).</span><span class="n">reshape</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c1">#直方图中各bin的顶点位置  
+</span>    <span class="k">for</span> <span class="n">ch</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([(</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)]):</span>  
+        <span class="c1"># 图片, 使用的通道, mask, HistSize, 直方图柱的范围
+</span>        <span class="n">origin_hist</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">calcHist</span><span class="p">([</span><span class="n">img</span><span class="p">],[</span><span class="n">ch</span><span class="p">],</span><span class="bp">None</span><span class="p">,[</span><span class="mi">256</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">256</span><span class="p">])</span>  
+        <span class="c1"># 归一化 src, dst, min, max, norm_type
+</span>        <span class="n">cv2</span><span class="p">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">origin_hist</span><span class="p">,</span> <span class="n">origin_hist</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">500</span><span class="o">*</span><span class="mf">0.9</span><span class="p">,</span><span class="n">cv2</span><span class="p">.</span><span class="n">NORM_MINMAX</span><span class="p">)</span>  
+        <span class="n">hist</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">int32</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">around</span><span class="p">(</span><span class="n">origin_hist</span><span class="p">))</span>  
+        <span class="c1"># 矩阵转置
+</span>        <span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">bins</span><span class="p">,</span><span class="n">hist</span><span class="p">))</span>  
+        <span class="c1"># False表示折线不需要闭合
+</span>        <span class="n">cv2</span><span class="p">.</span><span class="n">polylines</span><span class="p">(</span><span class="n">graph_img</span><span class="p">,[</span><span class="n">pts</span><span class="p">],</span><span class="bp">False</span><span class="p">,</span><span class="n">color</span><span class="p">)</span>  
+    <span class="k">return</span> <span class="n">graph_img</span>
+</code></pre></div></div>
 
         
       </section>
@@ -576,7 +576,7 @@ def get_rgb_hist(image):<br />
       <span class="page__meta-readtime">
         <i class="far fa-fw fa-clock" aria-hidden="true"></i>
         
-          1 minute read
+          less than 1 minute read
         
       </span>
     
