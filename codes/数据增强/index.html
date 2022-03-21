@@ -1,0 +1,943 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>数据增强 - Deeper Learning</title>
+<meta name="description" content="深度学习中常用的数据增强方法">
+
+
+  <meta name="author" content="beck">
+  
+  <meta property="article:author" content="beck">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en">
+<meta property="og:site_name" content="Deeper Learning">
+<meta property="og:title" content="数据增强">
+<meta property="og:url" content="/:categories/:title/">
+
+
+  <meta property="og:description" content="深度学习中常用的数据增强方法">
+
+
+
+  <meta property="og:image" content="https://www.mindgap.top/assets/basic/logo.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-21T00:00:00+08:00">
+
+
+
+
+
+  
+    <meta property="article:publisher" content="105088522138774">
+  
+
+  
+
+
+<link rel="canonical" href="/:categories/:title/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "beck.zhang",
+      "url": "https://www.mindgap.top/",
+      "sameAs": ["https://twitter.com/bolun365","https://www.facebook.com/bolunzhang365","https://instagram.com/bolun365","https://www.linkedin.com/in/bolun365"]
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="f50SgtYVSQQK36f0pjtDslrpJWNT0CiKzgIQRDjuxu4" />
+
+
+  <meta name="msvalidate.01" content="1B849CD71E50FF9650A86F5E26BBA288">
+
+
+
+  <meta name="yandex-verification" content="3318334315126741">
+
+
+  <meta name="naver-site-verification" content="89495b36e1f9eaca52622d8dd0401f9ebec06e02">
+
+
+  <meta name="baidu-site-verification" content="code-AFsYrPJanv">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Deeper Learning Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- Baidu Analytics bolun365.github.io mindgap.top -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b9cfbbc4efcace1fe10ea38340af6570";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?f34a42dbb9fdc92c38ce6bad6efe0a83";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics mindgap.top -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y70SG94YQY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Y70SG94YQY');
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        inlineMath: [['$','$']]
+        }
+    });
+</script>
+<script src="/assets/basic/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+<script src="/assets/basic/jquery-3.6.0.min.js"></script>
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/basic/logo.png" alt="Deeper Learning"></a>
+        
+        <a class="site-title" href="/">
+          Deeper Learning
+          <span class="site-subtitle">faster, higher, stronger</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/codes">CODES</a>
+            </li><li class="masthead__menu-item">
+              <a href="/math">MATH</a>
+            </li><li class="masthead__menu-item">
+              <a href="/projects">PROJECTS</a>
+            </li><li class="masthead__menu-item">
+              <a href="/competions">COMPETIONS</a>
+            </li><li class="masthead__menu-item">
+              <a href="/publications">PUBLICATIONS</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/assets/basic/codes.jpeg');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+	  	
+          数据增强</p>
+
+        
+      </h1>
+      
+        <p class="page__lead">深度学习中常用的数据增强方法</p>
+</p >
+      
+      
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+      
+      
+    </div>
+  
+  
+</div>
+
+
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="https://www.mindgap.top/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#codes" itemprop="item"><span itemprop="name">Codes</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">数据增强</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/basic/me.avatar.png" alt="beck" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">beck</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>dreammaker</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Shanghai, China</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://github.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="mailto:bolun365@163.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://instagram.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i><span class="label">Instagram</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="数据增强">
+    <meta itemprop="description" content="深度学习中常用的数据增强方法">
+    <meta itemprop="datePublished" content="2022-03-21T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> On this page</h4></header>
+              
+
+            </nav>
+          </aside>
+        
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">imutils</span>
+<span class="kn">import</span> <span class="nn">imutils.paths</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">PIL.Image</span>
+
+<span class="k">def</span> <span class="nf">random_salt</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">salt_num</span><span class="p">,</span> <span class="n">diameter</span><span class="p">):</span>
+    <span class="s">"""
+    椒盐噪声
+    :param im:
+    :param salt_num: 
+    :param diameter: 椒盐噪声半径
+    :return:
+    """</span>
+    <span class="k">assert</span> <span class="n">diameter</span> <span class="o">&gt;</span> <span class="mi">1</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">diameter</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">diameter</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">diameter</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">im</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">diameter</span> <span class="ow">or</span> <span class="n">im</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">diameter</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">Exception</span><span class="p">(</span><span class="s">"diameter error"</span><span class="p">)</span>
+    <span class="n">filled_circle</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">circle</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">diameter</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">diameter</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="n">radius</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">j</span> <span class="o">-</span> <span class="n">radius</span>
+            <span class="n">sqrt</span> <span class="o">=</span> <span class="n">math</span><span class="p">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sqrt</span> <span class="o">&lt;=</span> <span class="n">radius</span><span class="p">:</span>
+                <span class="n">filled_circle</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sqrt</span> <span class="o">/</span> <span class="n">radius</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">math</span><span class="p">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">radius</span> <span class="o">-</span> <span class="n">sqrt</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.4</span><span class="p">:</span>
+                <span class="n">circle</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+    <span class="n">channels</span> <span class="o">=</span> <span class="n">im</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">salt_num</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">radius</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">im</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">radius</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">im</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">radius</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">im</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">radius</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">im</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">filled_circle</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">channels</span><span class="p">):</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="n">im</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">j</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">channel</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">255</span> <span class="o">-</span> <span class="n">im</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">j</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">channel</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+                <span class="n">im</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">j</span> <span class="o">+</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]][</span><span class="n">channel</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+
+                
+<span class="k">def</span> <span class="nf">random_USM</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.</span><span class="p">):</span>
+    <span class="s">"""
+    USM锐化增强算法可以去除一些细小的干扰细节和图像噪声，比一般直接使用卷积锐化算子得到的图像更可靠。
+        output = 原图像−w∗高斯滤波(原图像)/(1−w)
+        其中w为上面所述的系数，取值范围为0.1~0.9，一般取0.6。
+    :param img:
+    :param gamma:
+    :return:
+    """</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span><span class="mf">0.8</span><span class="p">])</span>
+    <span class="n">blur</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">25</span><span class="p">)</span>
+    <span class="n">img_sharp</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">addWeighted</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">blur</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img_sharp</span>
+
+<span class="k">def</span> <span class="nf">random_flip</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="s">"""
+    随机翻转
+    :param img:
+    :param model: 1=水平翻转 / 0=垂直 /
+    :return:
+    """</span>
+    <span class="k">assert</span> <span class="n">mode</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s">"mode is not right"</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">img</span><span class="o">=</span><span class="n">cv2</span><span class="p">.</span><span class="n">flip</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span>
+
+
+<span class="k">def</span> <span class="nf">random_noise</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">rand_range</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">)):</span>
+    <span class="s">"""
+    随机噪声
+    :param img:
+    :param rand_range: (min, max)
+    :return:
+    """</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">np</span><span class="p">.</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="o">*</span><span class="n">rand_range</span><span class="p">)</span>
+    <span class="n">nosie</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">+=</span> <span class="n">nosie</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">img</span>
+
+
+<span class="k">def</span> <span class="nf">ranndom_blur</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)):</span>
+    <span class="s">"""
+    随机滤波
+    :param img:
+    :param ksize:
+    :return:
+    """</span>
+    <span class="n">blur_types</span> <span class="o">=</span> <span class="p">[</span><span class="s">'gaussian'</span><span class="p">,</span> <span class="s">'median'</span><span class="p">,</span> <span class="s">'mean'</span><span class="p">,</span> <span class="s">'box'</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">blur_types</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">blur_func</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">blur_index</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">(</span><span class="n">blur_types</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">blur_index</span> <span class="o">==</span> <span class="s">'gaussian'</span><span class="p">:</span>  <span class="c1"># 高斯模糊, 比均值滤波更平滑，边界保留更加好
+</span>        <span class="n">blur_func</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">ksize</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">blur_index</span> <span class="o">==</span> <span class="s">'median'</span><span class="p">:</span>  <span class="c1"># 中值滤波, 在边界保存方面好于均值滤波，但在模板变大的时候会存在一些边界的模糊。对于椒盐噪声有效
+</span>        <span class="n">blur_func</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">medianBlur</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">blur_index</span> <span class="o">==</span> <span class="s">'mean'</span><span class="p">:</span>  <span class="c1"># 均值滤波, 在去噪的同时去除了很多细节部分，将图像变得模糊
+</span>        <span class="n">blur_func</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">blur</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">ksize</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">blur_index</span> <span class="o">==</span>  <span class="s">'box'</span><span class="p">:</span>  <span class="c1"># 盒滤波器
+</span>        <span class="n">blur_func</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">boxFilter</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ksize</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">blur_func</span>
+
+
+<span class="k">def</span> <span class="nf">adjust_contrast_bright</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">contrast</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">brightness</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="s">"""
+    调整亮度与对比度
+    dst = img * contrast + brightness
+    :param img:
+    :param contrast: 对比度   越大越亮
+    :param brightness: 亮度  0~100
+    :return:
+    """</span>
+    <span class="c1"># 像素值会超过0-255， 因此需要截断
+</span>    <span class="n">brightness</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">((</span><span class="n">contrast</span> <span class="o">*</span> <span class="n">img</span> <span class="o">+</span> <span class="n">brightness</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">gamma_transform</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="s">"""
+    https://blog.csdn.net/zfjBIT/article/details/85113946
+    伽马变换就是用来图像增强，其提升了暗部细节，简单来说就是通过非线性变换，
+    让图像从暴光强度的线性响应变得更接近人眼感受的响应，即将漂白（相机曝光）或过暗（曝光不足）的图片，进行矫正
+    :param img:
+    :param gamma:
+        # gamma = random.random() * random.choice([0.5, 1, 3, 5])
+        &gt;1, 变暗
+        &lt;1, 漂白
+    :return:
+    """</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">gamma</span> <span class="o">&lt;</span> <span class="mf">25.</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">([</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
+    <span class="c1"># 具体做法先归一化到1，然后gamma作为指数值求出新的像素值再还原
+</span>    <span class="n">gamma_table</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="p">.</span><span class="n">power</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="mf">255.0</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span> <span class="o">*</span> <span class="mf">255.0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">256</span><span class="p">)]</span>
+    <span class="n">gamma_table</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">gamma_table</span><span class="p">)).</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="c1"># 实现映射用的是Opencv的查表函数
+</span>    <span class="k">return</span> <span class="n">cv2</span><span class="p">.</span><span class="n">LUT</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">gamma_table</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#codes" class="page__taxonomy-item" rel="tag">codes</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%20https%3A%2F%2Fwww.mindgap.top%2Fcodes%2F%25E6%2595%25B0%25E6%258D%25AE%25E5%25A2%259E%25E5%25BC%25BA%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.mindgap.top%2Fcodes%2F%25E6%2595%25B0%25E6%258D%25AE%25E5%25A2%259E%25E5%25BC%25BA%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/codes/%E5%9B%BE%E7%89%87%E6%93%8D%E4%BD%9C/" class="pagination--pager" title="图片操作
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/%E5%9B%BE%E7%89%87%E6%93%8D%E4%BD%9C/" rel="permalink">图片操作
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">常用图片编辑操作
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/%E5%9B%BE%E7%89%87%E4%BF%A1%E6%81%AF%E7%BB%9F%E8%AE%A1/" rel="permalink">图片信息统计
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">面像图像的各种统计报表生成
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/math/newmath/" rel="permalink">Newmath
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-01T00:00:00+08:00">March 1, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">abstract for seo and related article excerpt
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/publications/publications/" rel="permalink">Publications
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-01-15T00:00:00+08:00">January 15, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">abstract for seo and related article excerpt
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <script src="/assets/basic/mermaid.min.js"></script>
+<script>
+  $(document).ready(function () {
+    mermaid.initialize({
+      startOnLoad:true,
+      theme: "default",
+    });
+    window.mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
+  });
+</script>
+
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://instagram.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 beck zhang. Published with GitHub Pages. All rights reserved. </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+
+
+  </body>
+</html>

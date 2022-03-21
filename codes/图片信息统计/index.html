@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>New_projects - Deeper Learning</title>
-<meta name="description" content="abstract for seo and related article excerpt">
+<!-- begin _includes/seo.html --><title>图片信息统计 - Deeper Learning</title>
+<meta name="description" content="面像图像的各种统计报表生成">
 
 
   <meta name="author" content="beck">
@@ -22,11 +22,11 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en">
 <meta property="og:site_name" content="Deeper Learning">
-<meta property="og:title" content="New_projects">
+<meta property="og:title" content="图片信息统计">
 <meta property="og:url" content="/:categories/:title/">
 
 
-  <meta property="og:description" content="abstract for seo and related article excerpt">
+  <meta property="og:description" content="面像图像的各种统计报表生成">
 
 
 
@@ -36,7 +36,7 @@
 
 
 
-  <meta property="article:published_time" content="2022-01-15T00:00:00+08:00">
+  <meta property="article:published_time" content="2022-03-21T00:00:00+08:00">
 
 
 
@@ -213,18 +213,18 @@ var _hmt = _hmt || [];
 
 
 <div class="page__hero--overlay"
-  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/assets/basic/projects.jpeg');"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/assets/basic/codes.jpeg');"
 >
   
     <div class="wrapper">
       <h1 id="page-title" class="page__title" itemprop="headline">
 	  	
-          New_projects</p>
+          图片信息统计</p>
 
         
       </h1>
       
-        <p class="page__lead">abstract for seo and related article excerpt</p>
+        <p class="page__lead">面像图像的各种统计报表生成</p>
 </p >
       
       
@@ -235,7 +235,7 @@ var _hmt = _hmt || [];
       <span class="page__meta-date">
         <i class="far fa-calendar-alt" aria-hidden="true"></i>
         
-        <time datetime="2022-01-15T00:00:00+08:00">January 15, 2022</time>
+        <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time>
       </span>
     
 
@@ -285,7 +285,7 @@ var _hmt = _hmt || [];
       
         
         <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-          <a href="/categories/#projects" itemprop="item"><span itemprop="name">Projects</span></a>
+          <a href="/categories/#codes" itemprop="item"><span itemprop="name">Codes</span></a>
           <meta itemprop="position" content="2" />
         </li>
         <span class="sep">/</span>
@@ -293,7 +293,7 @@ var _hmt = _hmt || [];
     
       
       
-        <li class="current">New_projects</li>
+        <li class="current">图片信息统计</li>
       
     
   </ol>
@@ -424,9 +424,9 @@ var _hmt = _hmt || [];
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="New_projects">
-    <meta itemprop="description" content="abstract for seo and related article excerpt">
-    <meta itemprop="datePublished" content="2022-01-15T00:00:00+08:00">
+    <meta itemprop="headline" content="图片信息统计">
+    <meta itemprop="description" content="面像图像的各种统计报表生成">
+    <meta itemprop="datePublished" content="2022-03-21T00:00:00+08:00">
     
 
     <div class="page__inner-wrap">
@@ -437,13 +437,43 @@ var _hmt = _hmt || [];
           <aside class="sidebar__right sticky">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-cog"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#projects">projects</a></li></ul>
+              <ul class="toc__menu"><li><a href="#统计单通道">统计单通道</a></li><li><a href="#统计多通道">统计多通道</a></li></ul>
 
             </nav>
           </aside>
         
-        <h1 id="projects">projects</h1>
-<p>内容</p>
+        <h1 id="统计单通道">统计单通道</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_gray_hist</span><span class="p">(</span><span class="n">gray_image</span><span class="p">):</span>
+    <span class="c1"># 图片, 使用的通道, mask, HistSize, 直方图柱的范围
+</span>    <span class="n">hist</span><span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">calcHist</span><span class="p">([</span><span class="n">gray_image</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">256</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">255.0</span><span class="p">])</span>  
+    <span class="c1"># 归一化 src, dst, min, max, norm_type
+</span>    <span class="n">cv2</span><span class="p">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">hist</span><span class="p">,</span> <span class="n">hist</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">500</span><span class="o">*</span><span class="mf">0.9</span><span class="p">,</span><span class="n">cv2</span><span class="p">.</span><span class="n">NORM_MINMAX</span><span class="p">)</span>  
+    <span class="c1"># min_val, max_val, min_loc, max_loc = cv.minMaxLoc(hist)  
+</span>    <span class="n">hist_img</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">([</span><span class="mi">500</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">)</span>  
+    <span class="k">for</span> <span class="n">h</span><span class="p">,</span> <span class="n">intensity</span>  <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">hist</span><span class="p">):</span>
+        <span class="n">intensity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">intensity</span><span class="p">)</span>
+        <span class="n">cv2</span><span class="p">.</span><span class="n">line</span><span class="p">(</span><span class="n">hist_img</span><span class="p">,(</span><span class="n">h</span><span class="p">,</span><span class="mi">500</span><span class="p">),</span> <span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="mi">500</span><span class="o">-</span><span class="n">intensity</span><span class="p">),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">))</span>  
+    <span class="k">return</span> <span class="n">hist_img</span>
+</code></pre></div></div>
+
+<h1 id="统计多通道">统计多通道</h1>
+
+<p>```python
+def get_rgb_hist(image):<br />
+    graph_img = np.zeros((500,256,3))
+    bins = np.arange(256).reshape(256,1) #直方图中各bin的顶点位置<br />
+    for ch, color in enumerate([(255,0,0),(0,255,0),(0,0,255)]):<br />
+        # 图片, 使用的通道, mask, HistSize, 直方图柱的范围
+        origin_hist = cv2.calcHist([img],[ch],None,[256],[0,256])<br />
+        # 归一化 src, dst, min, max, norm_type
+        cv2.normalize(origin_hist, origin_hist,0,500*0.9,cv2.NORM_MINMAX)<br />
+        hist=np.int32(np.around(origin_hist))<br />
+        # 矩阵转置
+        pts = np.column_stack((bins,hist))<br />
+        # False表示折线不需要闭合
+        cv2.polylines(graph_img,[pts],False,color)<br />
+    return graph_img</p>
 
         
       </section>
@@ -462,7 +492,7 @@ var _hmt = _hmt || [];
     <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
     <span itemprop="keywords">
     
-      <a href="/categories/#projects" class="page__taxonomy-item" rel="tag">projects</a>
+      <a href="/categories/#codes" class="page__taxonomy-item" rel="tag">codes</a>
     
     </span>
   </p>
@@ -470,7 +500,7 @@ var _hmt = _hmt || [];
 
         
 
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-01-15T00:00:00+08:00">January 15, 2022</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time></p>
 
 
       </footer>
@@ -478,9 +508,9 @@ var _hmt = _hmt || [];
       <section class="page__share">
   
 
-  <a href="https://twitter.com/intent/tweet?text=New_projects%20https%3A%2F%2Fwww.mindgap.top%2Fprojects%2Fnew_projects%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=%E5%9B%BE%E7%89%87%E4%BF%A1%E6%81%AF%E7%BB%9F%E8%AE%A1%20https%3A%2F%2Fwww.mindgap.top%2Fcodes%2F%25E5%259B%25BE%25E7%2589%2587%25E4%25BF%25A1%25E6%2581%25AF%25E7%25BB%259F%25E8%25AE%25A1%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.mindgap.top%2Fprojects%2Fnew_projects%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.mindgap.top%2Fcodes%2F%25E5%259B%25BE%25E7%2589%2587%25E4%25BF%25A1%25E6%2581%25AF%25E7%25BB%259F%25E8%25AE%25A1%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
 </section>
 
@@ -488,11 +518,11 @@ var _hmt = _hmt || [];
       
   <nav class="pagination">
     
-      <a href="/competions/newcompetions/" class="pagination--pager" title="Newcompetions
+      <a href="/math/newmath/" class="pagination--pager" title="Newmath
 ">Previous</a>
     
     
-      <a href="/publications/publications/" class="pagination--pager" title="Publications
+      <a href="/codes/%E5%9B%BE%E7%89%87%E6%93%8D%E4%BD%9C/" class="pagination--pager" title="图片操作
 ">Next</a>
     
   </nav>
@@ -507,6 +537,108 @@ var _hmt = _hmt || [];
     <div class="page__related">
       <h4 class="page__related-title">You May Also Enjoy</h4>
       <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/" rel="permalink">数据增强
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">深度学习中常用的数据增强方法
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/%E5%9B%BE%E7%89%87%E6%93%8D%E4%BD%9C/" rel="permalink">图片操作
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">常用图片编辑操作
+</p>
+  </article>
+</div>
+
         
           
 
@@ -605,108 +737,6 @@ var _hmt = _hmt || [];
 
 
     <p class="archive__item-excerpt" itemprop="description">abstract for seo and related article excerpt
-</p>
-  </article>
-</div>
-
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="/assets/basic/teaser_default.jpg" alt="">
-      </div>
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/competions/newcompetions/" rel="permalink">Newcompetions
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2022-01-15T00:00:00+08:00">January 15, 2022</time>
-      </span>
-    
-
-    <span class="page__meta-sep"></span>
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">abstract for seo and related article excerpt
-</p>
-  </article>
-</div>
-
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="/assets/basic/homepage.jpg" alt="">
-      </div>
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/codes/new_codes/" rel="permalink">New_codes
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2022-01-15T00:00:00+08:00">January 15, 2022</time>
-      </span>
-    
-
-    <span class="page__meta-sep"></span>
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">abstract for codes
 </p>
   </article>
 </div>

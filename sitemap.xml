@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>https://www.mindgap.top/codes/new_codes/</loc>
-<lastmod>2022-01-15T00:00:00+08:00</lastmod>
+<loc>https://www.mindgap.top/projects/%E8%AE%A9%E9%9D%99%E6%80%81%E5%9B%BE%E7%89%87%E4%B8%AD%E7%9A%84%E5%A4%A9%E7%A9%BA%E6%B0%B4%E9%9D%A2%E6%B5%81%E5%8A%A8%E8%B5%B7%E6%9D%A5/</loc>
+<lastmod>2019-11-01T00:00:00+08:00</lastmod>
 </url>
 <url>
 <loc>https://www.mindgap.top/competions/newcompetions/</loc>
-<lastmod>2022-01-15T00:00:00+08:00</lastmod>
-</url>
-<url>
-<loc>https://www.mindgap.top/projects/new_projects/</loc>
 <lastmod>2022-01-15T00:00:00+08:00</lastmod>
 </url>
 <url>
@@ -19,6 +15,18 @@
 <url>
 <loc>https://www.mindgap.top/math/newmath/</loc>
 <lastmod>2022-03-01T00:00:00+08:00</lastmod>
+</url>
+<url>
+<loc>https://www.mindgap.top/codes/%E5%9B%BE%E7%89%87%E4%BF%A1%E6%81%AF%E7%BB%9F%E8%AE%A1/</loc>
+<lastmod>2022-03-21T00:00:00+08:00</lastmod>
+</url>
+<url>
+<loc>https://www.mindgap.top/codes/%E5%9B%BE%E7%89%87%E6%93%8D%E4%BD%9C/</loc>
+<lastmod>2022-03-21T00:00:00+08:00</lastmod>
+</url>
+<url>
+<loc>https://www.mindgap.top/codes/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/</loc>
+<lastmod>2022-03-21T00:00:00+08:00</lastmod>
 </url>
 <url>
 <loc>https://www.mindgap.top/404</loc>
