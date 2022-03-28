@@ -9,8 +9,8 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Publications - Deeper Learning</title>
-<meta name="description" content="abstract for seo and related article excerpt">
+<!-- begin _includes/seo.html --><title>Oss2批量下载目录 断点续传 - Deeper Learning</title>
+<meta name="description" content="阿里云oss目录下载, 可断点续传">
 
 
   <meta name="author" content="beck">
@@ -22,11 +22,11 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en">
 <meta property="og:site_name" content="Deeper Learning">
-<meta property="og:title" content="Publications">
+<meta property="og:title" content="Oss2批量下载目录 断点续传">
 <meta property="og:url" content="/:categories/:title/">
 
 
-  <meta property="og:description" content="abstract for seo and related article excerpt">
+  <meta property="og:description" content="阿里云oss目录下载, 可断点续传">
 
 
 
@@ -36,7 +36,7 @@
 
 
 
-  <meta property="article:published_time" content="2022-01-15T00:00:00+08:00">
+  <meta property="article:published_time" content="2022-03-22T00:00:00+08:00">
 
 
 
@@ -213,18 +213,18 @@ var _hmt = _hmt || [];
 
 
 <div class="page__hero--overlay"
-  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/assets/basic/publications.jpeg');"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/assets/basic/codes.jpeg');"
 >
   
     <div class="wrapper">
       <h1 id="page-title" class="page__title" itemprop="headline">
 	  	
-          Publications</p>
+          Oss2批量下载目录 断点续传</p>
 
         
       </h1>
       
-        <p class="page__lead">abstract for seo and related article excerpt</p>
+        <p class="page__lead">阿里云oss目录下载, 可断点续传</p>
 </p >
       
       
@@ -235,7 +235,7 @@ var _hmt = _hmt || [];
       <span class="page__meta-date">
         <i class="far fa-calendar-alt" aria-hidden="true"></i>
         
-        <time datetime="2022-01-15T00:00:00+08:00">January 15, 2022</time>
+        <time datetime="2022-03-22T00:00:00+08:00">March 22, 2022</time>
       </span>
     
 
@@ -285,7 +285,7 @@ var _hmt = _hmt || [];
       
         
         <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-          <a href="/categories/#publications" itemprop="item"><span itemprop="name">Publications</span></a>
+          <a href="/categories/#codes" itemprop="item"><span itemprop="name">Codes</span></a>
           <meta itemprop="position" content="2" />
         </li>
         <span class="sep">/</span>
@@ -293,7 +293,7 @@ var _hmt = _hmt || [];
     
       
       
-        <li class="current">Publications</li>
+        <li class="current">Oss2批量下载目录 断点续传</li>
       
     
   </ol>
@@ -424,9 +424,9 @@ var _hmt = _hmt || [];
 
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Publications">
-    <meta itemprop="description" content="abstract for seo and related article excerpt">
-    <meta itemprop="datePublished" content="2022-01-15T00:00:00+08:00">
+    <meta itemprop="headline" content="Oss2批量下载目录 断点续传">
+    <meta itemprop="description" content="阿里云oss目录下载, 可断点续传">
+    <meta itemprop="datePublished" content="2022-03-22T00:00:00+08:00">
     
 
     <div class="page__inner-wrap">
@@ -437,13 +437,58 @@ var _hmt = _hmt || [];
           <aside class="sidebar__right sticky">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-cog"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#publications">publications</a></li></ul>
+              
 
             </nav>
           </aside>
         
-        <h1 id="publications">publications</h1>
-<p>内容</p>
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">oss2</span>
+
+<span class="n">oss_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">'endpoint'</span><span class="p">:</span> <span class="s">'oss-cn-shanghai.aliyuncs.com'</span><span class="p">,</span>
+    <span class="s">'bucket'</span><span class="p">:</span> <span class="s">'bucketname'</span><span class="p">,</span>
+    <span class="s">'accessKeyId'</span><span class="p">:</span> <span class="s">'accessKeyId'</span><span class="p">,</span>
+    <span class="s">'accessKeySecret'</span><span class="p">:</span> <span class="s">'accessKeySecret'</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">oss_prefix</span> <span class="o">=</span> <span class="s">'oss_prefix'</span>
+<span class="n">download_local_save_prefix</span> <span class="o">=</span> <span class="s">"./"</span>
+
+
+<span class="n">auth</span> <span class="o">=</span> <span class="n">oss2</span><span class="p">.</span><span class="n">Auth</span><span class="p">(</span><span class="n">oss_config</span><span class="p">[</span><span class="s">'accessKeyId'</span><span class="p">],</span> <span class="n">oss_config</span><span class="p">[</span><span class="s">'accessKeySecret'</span><span class="p">])</span>
+<span class="n">bucket</span> <span class="o">=</span> <span class="n">oss2</span><span class="p">.</span><span class="n">Bucket</span><span class="p">(</span><span class="n">auth</span><span class="p">,</span> <span class="n">oss_config</span><span class="p">[</span><span class="s">'endpoint'</span><span class="p">],</span> <span class="n">oss_config</span><span class="p">[</span><span class="s">'bucket'</span><span class="p">])</span>
+
+<span class="n">cache_file_path</span> <span class="o">=</span> <span class="n">download_local_save_prefix</span> <span class="o">+</span> <span class="s">"cache_file."</span> <span class="o">+</span> <span class="n">oss_prefix</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="s">"/"</span><span class="p">,</span> <span class="s">"."</span><span class="p">)</span>
+<span class="n">isExists</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cache_file_path</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">isExists</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cache_file_path</span><span class="p">,</span> <span class="s">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fw</span><span class="p">:</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">dirs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">oss2</span><span class="p">.</span><span class="n">ObjectIterator</span><span class="p">(</span><span class="n">bucket</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">oss_prefix</span><span class="p">):</span>
+            <span class="n">base_dir</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">download_local_save_prefix</span> <span class="o">+</span> <span class="n">b</span><span class="p">.</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">base_dir</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dirs</span><span class="p">:</span>
+                <span class="n">isExists</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="n">base_dir</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">isExists</span><span class="p">:</span>
+                    <span class="n">os</span><span class="p">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">base_dir</span><span class="p">)</span>
+                    <span class="k">print</span><span class="p">(</span><span class="n">base_dir</span><span class="p">,</span> <span class="s">'create success'</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">num</span><span class="o">%</span><span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">pass</span>
+                <span class="c1"># print(num)
+</span>            <span class="n">fw</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">key</span><span class="o">+</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+            <span class="c1"># bucket.get_object_to_file(b.key, download_local_save_prefix + b.key)
+</span>            <span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cache_file_path</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fr</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">fr</span><span class="p">.</span><span class="n">read</span><span class="p">().</span><span class="n">split</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">!=</span><span class="s">""</span><span class="p">:</span>
+                <span class="n">isExists</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">isExists</span><span class="p">:</span>
+                    <span class="k">print</span><span class="p">(</span><span class="s">"download: "</span> <span class="o">+</span> <span class="n">line</span><span class="p">)</span>
+                    <span class="n">bucket</span><span class="p">.</span><span class="n">get_object_to_file</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">download_local_save_prefix</span> <span class="o">+</span> <span class="n">line</span><span class="p">)</span>
+</code></pre></div></div>
+
 
         
       </section>
@@ -462,7 +507,7 @@ var _hmt = _hmt || [];
     <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
     <span itemprop="keywords">
     
-      <a href="/categories/#publications" class="page__taxonomy-item" rel="tag">publications</a>
+      <a href="/categories/#codes" class="page__taxonomy-item" rel="tag">codes</a>
     
     </span>
   </p>
@@ -470,7 +515,7 @@ var _hmt = _hmt || [];
 
         
 
-  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-01-15T00:00:00+08:00">January 15, 2022</time></p>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-03-22T00:00:00+08:00">March 22, 2022</time></p>
 
 
       </footer>
@@ -478,9 +523,9 @@ var _hmt = _hmt || [];
       <section class="page__share">
   
 
-  <a href="https://twitter.com/intent/tweet?text=Publications%20https%3A%2F%2Fwww.mindgap.top%2Fpublications%2Fpublications%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Oss2%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BD%E7%9B%AE%E5%BD%95+%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0%20https%3A%2F%2Fwww.mindgap.top%2Fcodes%2Foss2%25E6%2589%25B9%25E9%2587%258F%25E4%25B8%258B%25E8%25BD%25BD%25E7%259B%25AE%25E5%25BD%2595-%25E6%2596%25AD%25E7%2582%25B9%25E7%25BB%25AD%25E4%25BC%25A0%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.mindgap.top%2Fpublications%2Fpublications%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.mindgap.top%2Fcodes%2Foss2%25E6%2589%25B9%25E9%2587%258F%25E4%25B8%258B%25E8%25BD%25BD%25E7%259B%25AE%25E5%25BD%2595-%25E6%2596%25AD%25E7%2582%25B9%25E7%25BB%25AD%25E4%25BC%25A0%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
 </section>
 
@@ -488,12 +533,11 @@ var _hmt = _hmt || [];
       
   <nav class="pagination">
     
-      <a href="/competions/newcompetions/" class="pagination--pager" title="Newcompetions
+      <a href="/codes/mixup%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88(yolox)/" class="pagination--pager" title="Mixup代码注释版(yolox)
 ">Previous</a>
     
     
-      <a href="/math/newmath/" class="pagination--pager" title="Newmath
-">Next</a>
+      <a href="#" class="pagination--pager disabled">Next</a>
     
   </nav>
 
@@ -516,57 +560,6 @@ var _hmt = _hmt || [];
     <div class="page__related">
       <h4 class="page__related-title">You May Also Enjoy</h4>
       <div class="grid__wrapper">
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="/assets/basic/teaser_default.jpg" alt="">
-      </div>
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/codes/oss2%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BD%E7%9B%AE%E5%BD%95-%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/" rel="permalink">Oss2批量下载目录 断点续传
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2022-03-22T00:00:00+08:00">March 22, 2022</time>
-      </span>
-    
-
-    <span class="page__meta-sep"></span>
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">阿里云oss目录下载, 可断点续传
-</p>
-  </article>
-</div>
-
         
           
 
@@ -708,7 +701,7 @@ var _hmt = _hmt || [];
       <span class="page__meta-readtime">
         <i class="far fa-fw fa-clock" aria-hidden="true"></i>
         
-          less than 1 minute read
+          2 minute read
         
       </span>
     
@@ -716,6 +709,57 @@ var _hmt = _hmt || [];
 
 
     <p class="archive__item-excerpt" itemprop="description">深度学习中常用的数据增强方法
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/%E5%9B%BE%E7%89%87%E4%BF%A1%E6%81%AF%E7%BB%9F%E8%AE%A1/" rel="permalink">图片信息统计
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">面像图像的各种统计报表生成
 </p>
   </article>
 </div>
@@ -802,8 +846,8 @@ var _hmt = _hmt || [];
     
   <script>
     var disqus_config = function () {
-      this.page.url = "https://www.mindgap.top/publications/publications/";  /* Replace PAGE_URL with your page's canonical URL variable */
-      this.page.identifier = "/publications/publications"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+      this.page.url = "https://www.mindgap.top/codes/oss2%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BD%E7%9B%AE%E5%BD%95-%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/codes/oss2批量下载目录-断点续传"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
     };
     (function() { /* DON'T EDIT BELOW THIS LINE */
       var d = document, s = d.createElement('script');

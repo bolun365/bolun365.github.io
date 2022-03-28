@@ -1,0 +1,931 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Mixup代码注释版(yolox) - Deeper Learning</title>
+<meta name="description" content="A CVer’s blog. Write deep learning experience in work here.">
+
+
+  <meta name="author" content="beck">
+  
+  <meta property="article:author" content="beck">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en">
+<meta property="og:site_name" content="Deeper Learning">
+<meta property="og:title" content="Mixup代码注释版(yolox)">
+<meta property="og:url" content="/:categories/:title/">
+
+
+  <meta property="og:description" content="A CVer’s blog. Write deep learning experience in work here.">
+
+
+
+  <meta property="og:image" content="https://www.mindgap.top/assets/basic/logo.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-22T00:00:00+08:00">
+
+
+
+
+
+  
+    <meta property="article:publisher" content="105088522138774">
+  
+
+  
+
+
+<link rel="canonical" href="/:categories/:title/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "beck.zhang",
+      "url": "https://www.mindgap.top/",
+      "sameAs": ["https://twitter.com/bolun365","https://www.facebook.com/bolunzhang365","https://instagram.com/bolun365","https://www.linkedin.com/in/bolun365"]
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="f50SgtYVSQQK36f0pjtDslrpJWNT0CiKzgIQRDjuxu4" />
+
+
+  <meta name="msvalidate.01" content="1B849CD71E50FF9650A86F5E26BBA288">
+
+
+
+  <meta name="yandex-verification" content="3318334315126741">
+
+
+  <meta name="naver-site-verification" content="89495b36e1f9eaca52622d8dd0401f9ebec06e02">
+
+
+  <meta name="baidu-site-verification" content="code-AFsYrPJanv">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Deeper Learning Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- Baidu Analytics bolun365.github.io mindgap.top -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b9cfbbc4efcace1fe10ea38340af6570";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?f34a42dbb9fdc92c38ce6bad6efe0a83";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics mindgap.top -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y70SG94YQY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Y70SG94YQY');
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        inlineMath: [['$','$']]
+        }
+    });
+</script>
+<script src="/assets/basic/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+<script src="/assets/basic/jquery-3.6.0.min.js"></script>
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/basic/logo.png" alt="Deeper Learning"></a>
+        
+        <a class="site-title" href="/">
+          Deeper Learning
+          <span class="site-subtitle">faster, higher, stronger</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/codes">CODES</a>
+            </li><li class="masthead__menu-item">
+              <a href="/math">MATH</a>
+            </li><li class="masthead__menu-item">
+              <a href="/projects">PROJECTS</a>
+            </li><li class="masthead__menu-item">
+              <a href="/competions">COMPETIONS</a>
+            </li><li class="masthead__menu-item">
+              <a href="/publications">PUBLICATIONS</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/assets/basic/codes.jpeg');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+	  	
+          Mixup代码注释版(yolox)</p>
+
+        
+      </h1>
+      
+        <p class="page__lead">
+</p >
+      
+      
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-22T00:00:00+08:00">March 22, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+      
+      
+    </div>
+  
+  
+</div>
+
+
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="https://www.mindgap.top/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#codes" itemprop="item"><span itemprop="name">Codes</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">/</span>
+      
+    
+      
+      
+        <li class="current">Mixup代码注释版(yolox)</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/basic/me.avatar.png" alt="beck" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">beck</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>dreammaker</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Shanghai, China</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://github.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="mailto:bolun365@163.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://instagram.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i><span class="label">Instagram</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Mixup代码注释版(yolox)">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2022-03-22T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> On this page</h4></header>
+              
+
+            </nav>
+          </aside>
+        
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">mixup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin_img</span><span class="p">,</span> <span class="n">origin_labels</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">):</span>
+    <span class="s">"""
+    在数据集中随机找一张图片, 放缩尺寸到input_dim(以114 padding), 再以jit_factor参数放缩(以0 padding下方和右方)
+    将这张图片乘0.5, origin_img乘0.5加到一起, 标签concat合并
+    """</span>
+    <span class="c1"># jit_factor放缩系数 (0.5, 1.5)
+</span>    <span class="n">jit_factor</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="p">.</span><span class="n">mixup_scale</span><span class="p">)</span>
+    <span class="n">FLIP</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
+    <span class="c1"># 从数据集中随机选一张图片
+</span>    <span class="n">cp_labels</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">cp_labels</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">cp_index</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">__len__</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">cp_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_dataset</span><span class="p">.</span><span class="n">load_anno</span><span class="p">(</span><span class="n">cp_index</span><span class="p">)</span>
+    <span class="n">img</span><span class="p">,</span> <span class="n">cp_labels</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_dataset</span><span class="p">.</span><span class="n">pull_item</span><span class="p">(</span><span class="n">cp_index</span><span class="p">)</span>
+
+    <span class="c1"># 将选的图片放缩为长边与input_dim保持一致
+</span>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">cp_img</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">((</span><span class="n">input_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">input_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">114</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cp_img</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">(</span><span class="n">input_dim</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">114</span>
+
+    <span class="n">cp_scale_ratio</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">input_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">input_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">resized_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span>
+        <span class="n">img</span><span class="p">,</span>
+        <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">cp_scale_ratio</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cp_scale_ratio</span><span class="p">)),</span>
+        <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="p">.</span><span class="n">INTER_LINEAR</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">cp_img</span><span class="p">[</span>
+        <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cp_scale_ratio</span><span class="p">),</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">cp_scale_ratio</span><span class="p">)</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="n">resized_img</span>
+
+    <span class="c1"># 放缩后, 再以jit_factor放缩
+</span>    <span class="n">cp_img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span>
+        <span class="n">cp_img</span><span class="p">,</span>
+        <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">cp_img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">jit_factor</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">cp_img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">jit_factor</span><span class="p">)),</span>
+    <span class="p">)</span>
+    <span class="n">cp_scale_ratio</span> <span class="o">*=</span> <span class="n">jit_factor</span>
+
+    <span class="k">if</span> <span class="n">FLIP</span><span class="p">:</span>
+        <span class="n">cp_img</span> <span class="o">=</span> <span class="n">cp_img</span><span class="p">[:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span>
+
+    <span class="c1"># 如果比origin_image大, 就按origin_image尺寸随机截取
+</span>    <span class="c1"># 如果没有origin_image大, 用0在底部和右部扩充至origin_image尺寸
+</span>    <span class="n">origin_h</span><span class="p">,</span> <span class="n">origin_w</span> <span class="o">=</span> <span class="n">cp_img</span><span class="p">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">target_h</span><span class="p">,</span> <span class="n">target_w</span> <span class="o">=</span> <span class="n">origin_img</span><span class="p">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">padded_img</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span>
+        <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">origin_h</span><span class="p">,</span> <span class="n">target_h</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">origin_w</span><span class="p">,</span> <span class="n">target_w</span><span class="p">),</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">uint8</span>
+    <span class="p">)</span>
+    <span class="n">padded_img</span><span class="p">[:</span><span class="n">origin_h</span><span class="p">,</span> <span class="p">:</span><span class="n">origin_w</span><span class="p">]</span> <span class="o">=</span> <span class="n">cp_img</span>
+
+    <span class="n">x_offset</span><span class="p">,</span> <span class="n">y_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">padded_img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">target_h</span><span class="p">:</span>
+        <span class="n">y_offset</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">padded_img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">target_h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">padded_img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">target_w</span><span class="p">:</span>
+        <span class="n">x_offset</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">padded_img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">target_w</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">padded_cropped_img</span> <span class="o">=</span> <span class="n">padded_img</span><span class="p">[</span>
+        <span class="n">y_offset</span><span class="p">:</span> <span class="n">y_offset</span> <span class="o">+</span> <span class="n">target_h</span><span class="p">,</span> <span class="n">x_offset</span><span class="p">:</span> <span class="n">x_offset</span> <span class="o">+</span> <span class="n">target_w</span>
+    <span class="p">]</span>
+
+    <span class="c1"># 截取框越界的部分
+</span>    <span class="n">cp_bboxes_origin_np</span> <span class="o">=</span> <span class="n">adjust_box_anns</span><span class="p">(</span>
+        <span class="n">cp_labels</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">].</span><span class="n">copy</span><span class="p">(),</span> <span class="n">cp_scale_ratio</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">origin_w</span><span class="p">,</span> <span class="n">origin_h</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">FLIP</span><span class="p">:</span>
+        <span class="n">cp_bboxes_origin_np</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">origin_w</span> <span class="o">-</span> <span class="n">cp_bboxes_origin_np</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">][:,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="n">cp_bboxes_transformed_np</span> <span class="o">=</span> <span class="n">cp_bboxes_origin_np</span><span class="p">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">cp_bboxes_transformed_np</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">(</span>
+        <span class="n">cp_bboxes_transformed_np</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">target_w</span>
+    <span class="p">)</span>
+    <span class="n">cp_bboxes_transformed_np</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">(</span>
+        <span class="n">cp_bboxes_transformed_np</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_offset</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">target_h</span>
+    <span class="p">)</span>
+    <span class="c1"># 过滤掉太小, 长宽比太大 和 被截取掉只剩1/5以下面积的框
+</span>    <span class="n">keep_list</span> <span class="o">=</span> <span class="n">box_candidates</span><span class="p">(</span><span class="n">cp_bboxes_origin_np</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="n">cp_bboxes_transformed_np</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">keep_list</span><span class="p">.</span><span class="nb">sum</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="n">cls_labels</span> <span class="o">=</span> <span class="n">cp_labels</span><span class="p">[</span><span class="n">keep_list</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span><span class="mi">5</span><span class="p">].</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">box_labels</span> <span class="o">=</span> <span class="n">cp_bboxes_transformed_np</span><span class="p">[</span><span class="n">keep_list</span><span class="p">]</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">box_labels</span><span class="p">,</span> <span class="n">cls_labels</span><span class="p">))</span>
+        <span class="n">origin_labels</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">origin_labels</span><span class="p">,</span> <span class="n">labels</span><span class="p">))</span>
+        <span class="n">origin_img</span> <span class="o">=</span> <span class="n">origin_img</span><span class="p">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="n">origin_img</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">origin_img</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">padded_cropped_img</span><span class="p">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">float32</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">origin_img</span><span class="p">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">),</span> <span class="n">origin_labels</span>
+
+<span class="k">def</span> <span class="nf">adjust_box_anns</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">scale_ratio</span><span class="p">,</span> <span class="n">padw</span><span class="p">,</span> <span class="n">padh</span><span class="p">,</span> <span class="n">w_max</span><span class="p">,</span> <span class="n">h_max</span><span class="p">):</span>
+    <span class="n">bbox</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">(</span><span class="n">bbox</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_ratio</span> <span class="o">+</span> <span class="n">padw</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w_max</span><span class="p">)</span>
+    <span class="n">bbox</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">(</span><span class="n">bbox</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_ratio</span> <span class="o">+</span> <span class="n">padh</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">h_max</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bbox</span>
+
+<span class="k">def</span> <span class="nf">box_candidates</span><span class="p">(</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">,</span> <span class="n">wh_thr</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ar_thr</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">area_thr</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
+    <span class="c1"># box1(4,n), box2(4,n)
+</span>    <span class="c1"># Compute candidate boxes which include follwing 5 things:
+</span>    <span class="c1"># box1 before augment, box2 after augment, wh_thr (pixels), aspect_ratio_thr, area_ratio
+</span>    <span class="n">w1</span><span class="p">,</span> <span class="n">h1</span> <span class="o">=</span> <span class="n">box1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">box1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">box1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">box1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">w2</span><span class="p">,</span> <span class="n">h2</span> <span class="o">=</span> <span class="n">box2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">box2</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">box2</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">box2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ar</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">w2</span> <span class="o">/</span> <span class="p">(</span><span class="n">h2</span> <span class="o">+</span> <span class="mf">1e-16</span><span class="p">),</span> <span class="n">h2</span> <span class="o">/</span> <span class="p">(</span><span class="n">w2</span> <span class="o">+</span> <span class="mf">1e-16</span><span class="p">))</span>  <span class="c1"># aspect ratio
+</span>    <span class="k">return</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">w2</span> <span class="o">&gt;</span> <span class="n">wh_thr</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">h2</span> <span class="o">&gt;</span> <span class="n">wh_thr</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">w2</span> <span class="o">*</span> <span class="n">h2</span> <span class="o">/</span> <span class="p">(</span><span class="n">w1</span> <span class="o">*</span> <span class="n">h1</span> <span class="o">+</span> <span class="mf">1e-16</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">area_thr</span><span class="p">)</span>
+        <span class="o">&amp;</span> <span class="p">(</span><span class="n">ar</span> <span class="o">&lt;</span> <span class="n">ar_thr</span><span class="p">)</span>
+    <span class="p">)</span>  <span class="c1"># candidates
+</span></code></pre></div></div>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#codes" class="page__taxonomy-item" rel="tag">codes</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-03-22T00:00:00+08:00">March 22, 2022</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Mixup%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88%28yolox%29%20https%3A%2F%2Fwww.mindgap.top%2Fcodes%2Fmixup%25E4%25BB%25A3%25E7%25A0%2581%25E6%25B3%25A8%25E9%2587%258A%25E7%2589%2588%28yolox%29%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.mindgap.top%2Fcodes%2Fmixup%25E4%25BB%25A3%25E7%25A0%2581%25E6%25B3%25A8%25E9%2587%258A%25E7%2589%2588%28yolox%29%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/codes/%E5%9B%BE%E7%89%87%E7%BC%96%E8%BE%91/" class="pagination--pager" title="图片编辑
+">Previous</a>
+    
+    
+      <a href="/codes/oss2%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BD%E7%9B%AE%E5%BD%95-%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/" class="pagination--pager" title="Oss2批量下载目录 断点续传
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Comments</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/oss2%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BD%E7%9B%AE%E5%BD%95-%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/" rel="permalink">Oss2批量下载目录 断点续传
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-22T00:00:00+08:00">March 22, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">阿里云oss目录下载, 可断点续传
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/%E5%9B%BE%E7%89%87%E7%BC%96%E8%BE%91/" rel="permalink">图片编辑
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">常用图片编辑操作
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/%E5%9B%BE%E7%89%87%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA/" rel="permalink">图片数据增强
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">深度学习中常用的数据增强方法
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/%E5%9B%BE%E7%89%87%E4%BF%A1%E6%81%AF%E7%BB%9F%E8%AE%A1/" rel="permalink">图片信息统计
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">面像图像的各种统计报表生成
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <script src="/assets/basic/mermaid.min.js"></script>
+<script>
+  $(document).ready(function () {
+    mermaid.initialize({
+      startOnLoad:true,
+      theme: "default",
+    });
+    window.mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
+  });
+</script>
+
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://instagram.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 beck zhang. Published with GitHub Pages. All rights reserved. </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://www.mindgap.top/codes/mixup%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88(yolox)/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/codes/mixup代码注释版(yolox)"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://mindgap.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>
