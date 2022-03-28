@@ -17,10 +17,10 @@ var store = [{
         "url": "/publications/publications/",
         "teaser": "/assets/basic/teaser_default.jpg"
       },{
-        "title": "Newmath",
-        "excerpt":"math  ","categories": ["math"],
+        "title": "几何原本与尺规做图",
+        "excerpt":"  勾股定理       正五边形      ","categories": ["math"],
         "tags": [],
-        "url": "/math/newmath/",
+        "url": "/math/%E5%87%A0%E4%BD%95%E5%8E%9F%E6%9C%AC%E4%B8%8E%E5%B0%BA%E8%A7%84%E5%81%9A%E5%9B%BE/",
         "teaser": "/assets/basic/teaser_default.jpg"
       },{
         "title": "图片信息统计",
