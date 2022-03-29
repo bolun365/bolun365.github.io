@@ -466,6 +466,17 @@ var _hmt = _hmt || [];
     <span class="n">perspective</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
     <span class="n">border</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
 <span class="p">):</span>
+    <span class="s">"""
+    随机旋转, 放大, 错切, 并上下左右截取border大小, 在yolox中截取后长宽变为之前的一半
+    :param targets:  labels x1,y1,x2,y2,0
+    :param degrees:   10
+    :param translate: 0.1
+    :param scale: 0.5-1.5
+    :param shear: 2.0
+    :param perspective: 这里应该没有实现, 并未通过getPerspectiveTransform求变换矩阵, 但标签相关处理逻辑可能是完整的, 待验证
+    :param border: [-input_h // 2, -input_w // 2]
+    :return:
+    """</span>
     <span class="c1"># targets = [cls, xyxy]
 </span>    <span class="n">height</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">border</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># shape(h,w,c)
 </span>    <span class="n">width</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">border</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
