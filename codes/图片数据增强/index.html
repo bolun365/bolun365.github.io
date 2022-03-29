@@ -437,7 +437,7 @@ var _hmt = _hmt || [];
           <aside class="sidebar__right sticky">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-cog"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#椒盐噪声">椒盐噪声</a></li><li><a href="#usm锐化增强">USM锐化增强</a></li><li><a href="#随机翻转">随机翻转</a></li><li><a href="#随机噪声">随机噪声</a></li><li><a href="#随机滤波">随机滤波</a></li><li><a href="#调整亮度与对比度">调整亮度与对比度</a></li><li><a href="#伽马变换">伽马变换</a></li></ul>
+              <ul class="toc__menu"><li><a href="#椒盐噪声">椒盐噪声</a></li><li><a href="#usm锐化增强">USM锐化增强</a></li><li><a href="#随机翻转">随机翻转</a></li><li><a href="#随机噪声">随机噪声</a></li><li><a href="#随机滤波">随机滤波</a></li><li><a href="#调整hsv">调整HSV</a></li><li><a href="#伽马变换">伽马变换</a></li></ul>
 
             </nav>
           </aside>
@@ -553,20 +553,28 @@ var _hmt = _hmt || [];
     <span class="k">return</span> <span class="n">blur_func</span>
 </code></pre></div></div>
 
-<h1 id="调整亮度与对比度">调整亮度与对比度</h1>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">adjust_contrast_bright</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">contrast</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">brightness</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<h1 id="调整hsv">调整HSV</h1>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">augment_hsv</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">hgain</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span> <span class="n">sgain</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">vgain</span><span class="o">=</span><span class="mf">0.4</span><span class="p">):</span>
     <span class="s">"""
-    调整亮度与对比度
-    dst = img * contrast + brightness
+    调整HSV(copy from yolox)
     :param img:
-    :param contrast: 对比度   越大越亮
-    :param brightness: 亮度  0~100
+    :param hgain, sgain, vgain: 调整范围
     :return:
     """</span>
-    <span class="c1"># 像素值会超过0-255， 因此需要截断
-</span>    <span class="n">brightness</span> <span class="o">=</span> <span class="n">random</span><span class="p">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">50</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">((</span><span class="n">contrast</span> <span class="o">*</span> <span class="n">img</span> <span class="o">+</span> <span class="n">brightness</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
-</code></pre></div></div>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="p">[</span><span class="n">hgain</span><span class="p">,</span> <span class="n">sgain</span><span class="p">,</span> <span class="n">vgain</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># random gains
+</span>    <span class="n">hue</span><span class="p">,</span> <span class="n">sat</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="n">cv2</span><span class="p">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_BGR2HSV</span><span class="p">))</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">dtype</span>  <span class="c1"># uint8
+</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">int16</span><span class="p">)</span>
+    <span class="n">lut_hue</span> <span class="o">=</span> <span class="p">((</span><span class="n">x</span> <span class="o">*</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">%</span> <span class="mi">180</span><span class="p">).</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">lut_sat</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">).</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">lut_val</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">r</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">).</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+
+    <span class="n">img_hsv</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">merge</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">cv2</span><span class="p">.</span><span class="n">LUT</span><span class="p">(</span><span class="n">hue</span><span class="p">,</span> <span class="n">lut_hue</span><span class="p">),</span> <span class="n">cv2</span><span class="p">.</span><span class="n">LUT</span><span class="p">(</span><span class="n">sat</span><span class="p">,</span> <span class="n">lut_sat</span><span class="p">),</span> <span class="n">cv2</span><span class="p">.</span><span class="n">LUT</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">lut_val</span><span class="p">))</span>
+    <span class="p">).</span><span class="n">astype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="p">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img_hsv</span><span class="p">,</span> <span class="n">cv2</span><span class="p">.</span><span class="n">COLOR_HSV2BGR</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">img</span><span class="p">)</span>  <span class="c1"># no return needed
+</span></code></pre></div></div>
 
 <h1 id="伽马变换">伽马变换</h1>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">gamma_transform</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
@@ -677,6 +685,108 @@ var _hmt = _hmt || [];
     
     <h2 class="archive__item-title no_toc" itemprop="headline">
       
+        <a href="/codes/random_perspective%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88(yolox)/" rel="permalink">Random_perspective代码注释版(yolox)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-29T00:00:00+08:00">March 29, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/mosaic%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88(yolox)/" rel="permalink">Mosaic代码注释版(yolox)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-29T00:00:00+08:00">March 29, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
         <a href="/codes/oss2%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BD%E7%9B%AE%E5%BD%95-%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/" rel="permalink">Oss2批量下载目录 断点续传
 </a>
       
@@ -761,108 +871,6 @@ var _hmt = _hmt || [];
 
 
     <p class="archive__item-excerpt" itemprop="description">
-</p>
-  </article>
-</div>
-
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="/assets/basic/teaser_default.jpg" alt="">
-      </div>
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/codes/%E5%9B%BE%E7%89%87%E7%BC%96%E8%BE%91/" rel="permalink">图片编辑
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time>
-      </span>
-    
-
-    <span class="page__meta-sep"></span>
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
-        
-          3 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">常用图片编辑操作
-</p>
-  </article>
-</div>
-
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
-    
-      <div class="archive__item-teaser">
-        <img src="/assets/basic/teaser_default.jpg" alt="">
-      </div>
-    
-    <h2 class="archive__item-title no_toc" itemprop="headline">
-      
-        <a href="/codes/%E5%9B%BE%E7%89%87%E4%BF%A1%E6%81%AF%E7%BB%9F%E8%AE%A1/" rel="permalink">图片信息统计
-</a>
-      
-    </h2>
-    
-
-  <p class="page__meta">
-    
-      
-      <span class="page__meta-date">
-        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
-        
-        <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time>
-      </span>
-    
-
-    <span class="page__meta-sep"></span>
-
-    
-      
-      
-
-      <span class="page__meta-readtime">
-        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
-        
-          less than 1 minute read
-        
-      </span>
-    
-  </p>
-
-
-    <p class="archive__item-excerpt" itemprop="description">面像图像的各种统计报表生成
 </p>
   </article>
 </div>

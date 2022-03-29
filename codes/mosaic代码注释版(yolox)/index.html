@@ -1,0 +1,908 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Mosaic代码注释版(yolox) - Deeper Learning</title>
+<meta name="description" content="A CVer’s blog. Write deep learning experience in work here.">
+
+
+  <meta name="author" content="beck">
+  
+  <meta property="article:author" content="beck">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en">
+<meta property="og:site_name" content="Deeper Learning">
+<meta property="og:title" content="Mosaic代码注释版(yolox)">
+<meta property="og:url" content="/:categories/:title/">
+
+
+  <meta property="og:description" content="A CVer’s blog. Write deep learning experience in work here.">
+
+
+
+  <meta property="og:image" content="https://www.mindgap.top/assets/basic/logo.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-29T00:00:00+08:00">
+
+
+
+
+
+  
+    <meta property="article:publisher" content="105088522138774">
+  
+
+  
+
+
+<link rel="canonical" href="/:categories/:title/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "beck.zhang",
+      "url": "https://www.mindgap.top/",
+      "sameAs": ["https://twitter.com/bolun365","https://www.facebook.com/bolunzhang365","https://instagram.com/bolun365","https://www.linkedin.com/in/bolun365"]
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="f50SgtYVSQQK36f0pjtDslrpJWNT0CiKzgIQRDjuxu4" />
+
+
+  <meta name="msvalidate.01" content="1B849CD71E50FF9650A86F5E26BBA288">
+
+
+
+  <meta name="yandex-verification" content="3318334315126741">
+
+
+  <meta name="naver-site-verification" content="89495b36e1f9eaca52622d8dd0401f9ebec06e02">
+
+
+  <meta name="baidu-site-verification" content="code-AFsYrPJanv">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Deeper Learning Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- Baidu Analytics bolun365.github.io mindgap.top -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b9cfbbc4efcace1fe10ea38340af6570";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?f34a42dbb9fdc92c38ce6bad6efe0a83";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics mindgap.top -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y70SG94YQY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Y70SG94YQY');
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        inlineMath: [['$','$']]
+        }
+    });
+</script>
+<script src="/assets/basic/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+<script src="/assets/basic/jquery-3.6.0.min.js"></script>
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/basic/logo.png" alt="Deeper Learning"></a>
+        
+        <a class="site-title" href="/">
+          Deeper Learning
+          <span class="site-subtitle">faster, higher, stronger</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/codes">CODES</a>
+            </li><li class="masthead__menu-item">
+              <a href="/math">MATH</a>
+            </li><li class="masthead__menu-item">
+              <a href="/projects">PROJECTS</a>
+            </li><li class="masthead__menu-item">
+              <a href="/competions">COMPETIONS</a>
+            </li><li class="masthead__menu-item">
+              <a href="/publications">PUBLICATIONS</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/assets/basic/codes.jpeg');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+	  	
+          Mosaic代码注释版(yolox)</p>
+
+        
+      </h1>
+      
+        <p class="page__lead">
+</p >
+      
+      
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-29T00:00:00+08:00">March 29, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+      
+      
+    </div>
+  
+  
+</div>
+
+
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="https://www.mindgap.top/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">></span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#codes" itemprop="item"><span itemprop="name">Codes</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">></span>
+      
+    
+      
+      
+        <li class="current">Mosaic代码注释版(yolox)</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/basic/me.avatar.png" alt="beck" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">beck</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>dreammaker</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Shanghai, China</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://github.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="mailto:bolun365@163.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://instagram.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i><span class="label">Instagram</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Mosaic代码注释版(yolox)">
+    <meta itemprop="description" content="">
+    <meta itemprop="datePublished" content="2022-03-29T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> On this page</h4></header>
+              
+
+            </nav>
+          </aside>
+        
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_mosaic_coordinate</span><span class="p">(</span><span class="n">mosaic_image</span><span class="p">,</span> <span class="n">mosaic_index</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">yc</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">input_h</span><span class="p">,</span> <span class="n">input_w</span><span class="p">):</span>
+    <span class="s">"""
+    找截取坐标
+    分别将左上的右下点,右上的左下点,左下的右上点,右下的左上点重合在xc,yc的位置,在截取掉超出mosaic_image的区域
+    :param xc,yc: 在mosaic_image上4张图片的分界点
+    :param w,h: 被粘贴的图片由于等比例缩小后可能是长方形
+    :param input_h,input_w: 是mosaic_image大小值的一半
+    """</span>
+    <span class="c1"># index0 to top left part of image
+</span>    <span class="k">if</span> <span class="n">mosaic_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">xc</span> <span class="o">-</span> <span class="n">w</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">yc</span> <span class="o">-</span> <span class="n">h</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">xc</span><span class="p">,</span> <span class="n">yc</span>
+        <span class="n">small_coord</span> <span class="o">=</span> <span class="n">w</span> <span class="o">-</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">),</span> <span class="n">h</span> <span class="o">-</span> <span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">),</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span>
+    <span class="c1"># index1 to top right part of image
+</span>    <span class="k">elif</span> <span class="n">mosaic_index</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">xc</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">yc</span> <span class="o">-</span> <span class="n">h</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">xc</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">input_w</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="n">yc</span>
+        <span class="n">small_coord</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">h</span> <span class="o">-</span> <span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">),</span> <span class="n">h</span>
+    <span class="c1"># index2 to bottom left part of image
+</span>    <span class="k">elif</span> <span class="n">mosaic_index</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">xc</span> <span class="o">-</span> <span class="n">w</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">yc</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">input_h</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">yc</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span>
+        <span class="n">small_coord</span> <span class="o">=</span> <span class="n">w</span> <span class="o">-</span> <span class="p">(</span><span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+    <span class="c1"># index2 to bottom right part of image
+</span>    <span class="k">elif</span> <span class="n">mosaic_index</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">xc</span><span class="p">,</span> <span class="n">yc</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">xc</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">input_w</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">input_h</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">yc</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span>  <span class="c1"># noqa
+</span>        <span class="n">small_coord</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">x2</span> <span class="o">-</span> <span class="n">x1</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">y2</span> <span class="o">-</span> <span class="n">y1</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">),</span> <span class="n">small_coord</span>
+
+<span class="k">class</span> <span class="nc">MosaicDetection</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">Dataset</span><span class="p">.</span><span class="n">mosaic_getitem</span>
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">enable_mosaic</span> <span class="ow">and</span> <span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="p">.</span><span class="n">mosaic_prob</span><span class="p">:</span>
+            <span class="n">mosaic_labels</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">input_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_dataset</span><span class="p">.</span><span class="n">input_dim</span>
+            <span class="n">input_h</span><span class="p">,</span> <span class="n">input_w</span> <span class="o">=</span> <span class="n">input_dim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">input_dim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># yc, xc = s, s  # mosaic center x, y
+</span>            <span class="n">yc</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">input_h</span><span class="p">,</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">input_h</span><span class="p">))</span>
+            <span class="n">xc</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">input_w</span><span class="p">,</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">input_w</span><span class="p">))</span>
+
+            <span class="c1"># 3 additional image indices
+</span>            <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">random</span><span class="p">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">_dataset</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+
+            <span class="k">for</span> <span class="n">i_mosaic</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">indices</span><span class="p">):</span>
+                <span class="n">img</span><span class="p">,</span> <span class="n">_labels</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">img_id</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">_dataset</span><span class="p">.</span><span class="n">pull_item</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                <span class="n">h0</span><span class="p">,</span> <span class="n">w0</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># orig hw
+</span>                <span class="n">scale</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.</span> <span class="o">*</span> <span class="n">input_h</span> <span class="o">/</span> <span class="n">h0</span><span class="p">,</span> <span class="mf">1.</span> <span class="o">*</span> <span class="n">input_w</span> <span class="o">/</span> <span class="n">w0</span><span class="p">)</span>
+                <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span>
+                    <span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">w0</span> <span class="o">*</span> <span class="n">scale</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">h0</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)),</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="p">.</span><span class="n">INTER_LINEAR</span>
+                <span class="p">)</span>
+                <span class="c1"># generate output mosaic image
+</span>                <span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">i_mosaic</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">mosaic_img</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">full</span><span class="p">((</span><span class="n">input_h</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">input_w</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="mi">114</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">uint8</span><span class="p">)</span>
+
+                <span class="c1"># suffix l means large image, while s means small image in mosaic aug.
+</span>                <span class="p">(</span><span class="n">l_x1</span><span class="p">,</span> <span class="n">l_y1</span><span class="p">,</span> <span class="n">l_x2</span><span class="p">,</span> <span class="n">l_y2</span><span class="p">),</span> <span class="p">(</span><span class="n">s_x1</span><span class="p">,</span> <span class="n">s_y1</span><span class="p">,</span> <span class="n">s_x2</span><span class="p">,</span> <span class="n">s_y2</span><span class="p">)</span> <span class="o">=</span> <span class="n">get_mosaic_coordinate</span><span class="p">(</span>
+                    <span class="n">mosaic_img</span><span class="p">,</span> <span class="n">i_mosaic</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">yc</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">input_h</span><span class="p">,</span> <span class="n">input_w</span>
+                <span class="p">)</span>
+
+                <span class="n">mosaic_img</span><span class="p">[</span><span class="n">l_y1</span><span class="p">:</span><span class="n">l_y2</span><span class="p">,</span> <span class="n">l_x1</span><span class="p">:</span><span class="n">l_x2</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">s_y1</span><span class="p">:</span><span class="n">s_y2</span><span class="p">,</span> <span class="n">s_x1</span><span class="p">:</span><span class="n">s_x2</span><span class="p">]</span>
+                <span class="c1"># padw,padh用于对标签操作
+</span>                <span class="c1"># 大图中的x1,y1是标签增长的部分, 小图中的x1,y1是标签减小的部分
+</span>                <span class="n">padw</span><span class="p">,</span> <span class="n">padh</span> <span class="o">=</span> <span class="n">l_x1</span> <span class="o">-</span> <span class="n">s_x1</span><span class="p">,</span> <span class="n">l_y1</span> <span class="o">-</span> <span class="n">s_y1</span>
+
+                <span class="n">labels</span> <span class="o">=</span> <span class="n">_labels</span><span class="p">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="c1"># Normalized xywh to pixel xyxy format
+</span>                <span class="k">if</span> <span class="n">_labels</span><span class="p">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># scale接之前的图片放缩scale倍
+</span>                    <span class="n">labels</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">_labels</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">padw</span>
+                    <span class="n">labels</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">_labels</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">padh</span>
+                    <span class="n">labels</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">_labels</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">padw</span>
+                    <span class="n">labels</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">_labels</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">padh</span>
+                <span class="n">mosaic_labels</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+
+            <span class="c1"># 标签clip, 避免训练过程中出现异常
+</span>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mosaic_labels</span><span class="p">):</span>
+                <span class="n">mosaic_labels</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">mosaic_labels</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">(</span><span class="n">mosaic_labels</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">input_w</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">mosaic_labels</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+                <span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">(</span><span class="n">mosaic_labels</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">input_h</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">mosaic_labels</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">(</span><span class="n">mosaic_labels</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">input_w</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">mosaic_labels</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+                <span class="n">np</span><span class="p">.</span><span class="n">clip</span><span class="p">(</span><span class="n">mosaic_labels</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">input_h</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">mosaic_labels</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">])</span>
+
+            <span class="c1"># 目前的图片长宽将是目标输出大小的两倍, 在后续的函数中会截取四个方向边界超出的部分
+</span>            <span class="p">......</span>
+</code></pre></div></div>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#codes" class="page__taxonomy-item" rel="tag">codes</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-03-29T00:00:00+08:00">March 29, 2022</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Mosaic%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88%28yolox%29%20https%3A%2F%2Fwww.mindgap.top%2Fcodes%2Fmosaic%25E4%25BB%25A3%25E7%25A0%2581%25E6%25B3%25A8%25E9%2587%258A%25E7%2589%2588%28yolox%29%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.mindgap.top%2Fcodes%2Fmosaic%25E4%25BB%25A3%25E7%25A0%2581%25E6%25B3%25A8%25E9%2587%258A%25E7%2589%2588%28yolox%29%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/codes/oss2%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BD%E7%9B%AE%E5%BD%95-%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/" class="pagination--pager" title="Oss2批量下载目录 断点续传
+">Previous</a>
+    
+    
+      <a href="/codes/random_perspective%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88(yolox)/" class="pagination--pager" title="Random_perspective代码注释版(yolox)
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Comments(Cannot be displayed in mainland China temporarily)</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/random_perspective%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88(yolox)/" rel="permalink">Random_perspective代码注释版(yolox)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-29T00:00:00+08:00">March 29, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/oss2%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BD%E7%9B%AE%E5%BD%95-%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/" rel="permalink">Oss2批量下载目录 断点续传
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-22T00:00:00+08:00">March 22, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">阿里云oss目录下载, 可断点续传
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/mixup%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88(yolox)/" rel="permalink">Mixup代码注释版(yolox)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-22T00:00:00+08:00">March 22, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/%E5%9B%BE%E7%89%87%E7%BC%96%E8%BE%91/" rel="permalink">图片编辑
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          3 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">常用图片编辑操作
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <script src="/assets/basic/mermaid.min.js"></script>
+<script>
+  $(document).ready(function () {
+    mermaid.initialize({
+      startOnLoad:true,
+      theme: "default",
+    });
+    window.mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
+  });
+</script>
+
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://instagram.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 beck zhang. Published with GitHub Pages. All rights reserved. </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://www.mindgap.top/codes/mosaic%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88(yolox)/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/codes/mosaic代码注释版(yolox)"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://mindgap.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>

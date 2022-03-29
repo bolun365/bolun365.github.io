@@ -52,4 +52,16 @@ var store = [{
         "tags": [],
         "url": "/codes/oss2%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BD%E7%9B%AE%E5%BD%95-%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/",
         "teaser": "/assets/basic/teaser_default.jpg"
+      },{
+        "title": "Mosaic代码注释版(yolox)",
+        "excerpt":"def get_mosaic_coordinate(mosaic_image, mosaic_index, xc, yc, w, h, input_h, input_w): \"\"\" 找截取坐标 分别将左上的右下点,右上的左下点,左下的右上点,右下的左上点重合在xc,yc的位置,在截取掉超出mosaic_image的区域 :param xc,yc: 在mosaic_image上4张图片的分界点 :param w,h: 被粘贴的图片由于等比例缩小后可能是长方形 :param input_h,input_w: 是mosaic_image大小值的一半 \"\"\" # index0 to top left part of image if mosaic_index == 0: x1, y1, x2, y2 = max(xc - w, 0), max(yc - h, 0), xc, yc small_coord...","categories": ["codes"],
+        "tags": [],
+        "url": "/codes/mosaic%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88(yolox)/",
+        "teaser": "/assets/basic/teaser_default.jpg"
+      },{
+        "title": "Random_perspective代码注释版(yolox)",
+        "excerpt":"def box_candidates(box1, box2, wh_thr=2, ar_thr=20, area_thr=0.2): # box1(4,n), box2(4,n) # Compute candidate boxes which include follwing 5 things: # box1 before augment, box2 after augment, wh_thr (pixels), aspect_ratio_thr, area_ratio w1, h1 = box1[2] - box1[0], box1[3] - box1[1] w2, h2 = box2[2] - box2[0], box2[3] - box2[1] ar = np.maximum(w2...","categories": ["codes"],
+        "tags": [],
+        "url": "/codes/random_perspective%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88(yolox)/",
+        "teaser": "/assets/basic/teaser_default.jpg"
       }]
