@@ -443,7 +443,8 @@ var _hmt = _hmt || [];
           </aside>
         
         <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">box_candidates</span><span class="p">(</span><span class="n">box1</span><span class="p">,</span> <span class="n">box2</span><span class="p">,</span> <span class="n">wh_thr</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ar_thr</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">area_thr</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
-    <span class="c1"># box1(4,n), box2(4,n)
+    <span class="c1"># 变换前的框, 变换后的框, 长宽最小值, 长宽比域值, 变换前的框占变换后的框的最小面积比
+</span>    <span class="c1"># box1(4,n), box2(4,n)
 </span>    <span class="c1"># Compute candidate boxes which include follwing 5 things:
 </span>    <span class="c1"># box1 before augment, box2 after augment, wh_thr (pixels), aspect_ratio_thr, area_ratio
 </span>    <span class="n">w1</span><span class="p">,</span> <span class="n">h1</span> <span class="o">=</span> <span class="n">box1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">box1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">box1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="n">box1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -468,11 +469,12 @@ var _hmt = _hmt || [];
 <span class="p">):</span>
     <span class="s">"""
     随机旋转, 放大, 错切, 并上下左右截取border大小, 在yolox中截取后长宽变为之前的一半
+    函数应该有一个问题, 对于box_candidates, degrees, translate,值过大时, 会使目标框偏移, 最终导致变换后的目标框与变换前的目标框相距过远, 面积重叠部分太小而被box_candidates过滤.
     :param targets:  labels x1,y1,x2,y2,0
     :param degrees:   10
     :param translate: 0.1
     :param scale: 0.5-1.5
-    :param shear: 2.0
+    :param shear: 2.0 错切最大角度
     :param perspective: 这里应该没有实现, 并未通过getPerspectiveTransform求变换矩阵, 但标签相关处理逻辑可能是完整的, 待验证
     :param border: [-input_h // 2, -input_w // 2]
     :return:
@@ -554,6 +556,7 @@ var _hmt = _hmt || [];
         <span class="n">xy</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[:,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]].</span><span class="n">clip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span>
 
         <span class="c1"># filter candidates
+</span>        <span class="c1"># 这里s为图片放大倍数
 </span>        <span class="n">i</span> <span class="o">=</span> <span class="n">box_candidates</span><span class="p">(</span><span class="n">box1</span><span class="o">=</span><span class="n">targets</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">].</span><span class="n">T</span> <span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">box2</span><span class="o">=</span><span class="n">xy</span><span class="p">.</span><span class="n">T</span><span class="p">)</span>
         <span class="n">targets</span> <span class="o">=</span> <span class="n">targets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">targets</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
