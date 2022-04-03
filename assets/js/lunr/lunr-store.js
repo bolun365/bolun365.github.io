@@ -12,7 +12,7 @@ var store = [{
         "teaser": "/assets/basic/teaser_default.jpg"
       },{
         "title": "Comming Soon",
-        "excerpt":"publications  内容  ","categories": ["publications"],
+        "excerpt":" ","categories": ["publications"],
         "tags": [],
         "url": "/publications/comming-soon/",
         "teaser": "/assets/basic/teaser_default.jpg"
