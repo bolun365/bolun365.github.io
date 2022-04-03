@@ -5,16 +5,16 @@ var store = [{
         "url": "/projects/%E8%AE%A9%E9%9D%99%E6%80%81%E5%9B%BE%E7%89%87%E4%B8%AD%E7%9A%84%E5%A4%A9%E7%A9%BA%E6%B0%B4%E9%9D%A2%E6%B5%81%E5%8A%A8%E8%B5%B7%E6%9D%A5/",
         "teaser": "/assets/projects/2019-11-01/1.jpg"
       },{
-        "title": "Newcompetions",
-        "excerpt":"competions  内容  ","categories": ["competions"],
+        "title": "Comming Soon",
+        "excerpt":" ","categories": ["competions"],
         "tags": [],
-        "url": "/competions/newcompetions/",
+        "url": "/competions/comming-soon/",
         "teaser": "/assets/basic/teaser_default.jpg"
       },{
-        "title": "Publications",
+        "title": "Comming Soon",
         "excerpt":"publications  内容  ","categories": ["publications"],
         "tags": [],
-        "url": "/publications/publications/",
+        "url": "/publications/comming-soon/",
         "teaser": "/assets/basic/teaser_default.jpg"
       },{
         "title": "几何原本与尺规做图",
