@@ -23,6 +23,12 @@ var store = [{
         "url": "/math/%E5%87%A0%E4%BD%95%E5%8E%9F%E6%9C%AC%E4%B8%8E%E5%B0%BA%E8%A7%84%E5%81%9A%E5%9B%BE/",
         "teaser": "/assets/basic/teaser_default.jpg"
       },{
+        "title": "Od loss(yolox)",
+        "excerpt":"#!/usr/bin/env python3 # -*- coding:utf-8 -*- # Copyright (c) Megvii Inc. All rights reserved. import math from loguru import logger import torch import torch.nn as nn import torch.nn.functional as F from yolox.utils import bboxes_iou, meshgrid from .losses import IOUloss from .network_blocks import BaseConv, DWConv def bboxes_iou(bboxes_a, bboxes_b, xyxy=True): if bboxes_a.shape[1]...","categories": ["codes"],
+        "tags": [],
+        "url": "/codes/OD-loss(YOLOX)/",
+        "teaser": "/assets/basic/teaser_default.jpg"
+      },{
         "title": "图片信息统计",
         "excerpt":"统计单通道 def get_gray_hist(gray_image): # 图片, 使用的通道, mask, HistSize, 直方图柱的范围 hist= cv2.calcHist([gray_image], [0], None, [256], [0.0,255.0]) # 归一化 src, dst, min, max, norm_type cv2.normalize(hist, hist,0,500*0.9,cv2.NORM_MINMAX) # min_val, max_val, min_loc, max_loc = cv.minMaxLoc(hist) hist_img = np.zeros([500,256,3], np.uint8) for h, intensity in enumerate(hist): intensity = int(intensity) cv2.line(hist_img,(h,500), (h,500-intensity), (255,255,255)) return hist_img 统计多通道 def...","categories": ["codes"],
         "tags": [],

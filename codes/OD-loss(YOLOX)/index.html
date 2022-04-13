@@ -1,0 +1,1573 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Od loss(yolox) - Deeper Learning</title>
+<meta name="description" content="```python #!/usr/bin/env python3 -- coding:utf-8 -- Copyright (c) Megvii Inc. All rights reserved.">
+
+
+  <meta name="author" content="beck">
+  
+  <meta property="article:author" content="beck">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en">
+<meta property="og:site_name" content="Deeper Learning">
+<meta property="og:title" content="Od loss(yolox)">
+<meta property="og:url" content="/:categories/:title/">
+
+
+  <meta property="og:description" content="```python #!/usr/bin/env python3 -- coding:utf-8 -- Copyright (c) Megvii Inc. All rights reserved.">
+
+
+
+  <meta property="og:image" content="https://www.mindgap.top/assets/basic/logo.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2022-03-21T00:00:00+08:00">
+
+
+
+
+
+  
+    <meta property="article:publisher" content="105088522138774">
+  
+
+  
+
+
+<link rel="canonical" href="/:categories/:title/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "beck.zhang",
+      "url": "https://www.mindgap.top/",
+      "sameAs": ["https://twitter.com/bolun365","https://www.facebook.com/bolunzhang365","https://instagram.com/bolun365","https://www.linkedin.com/in/bolun365"]
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="f50SgtYVSQQK36f0pjtDslrpJWNT0CiKzgIQRDjuxu4" />
+
+
+  <meta name="msvalidate.01" content="1B849CD71E50FF9650A86F5E26BBA288">
+
+
+
+  <meta name="yandex-verification" content="3318334315126741">
+
+
+  <meta name="naver-site-verification" content="89495b36e1f9eaca52622d8dd0401f9ebec06e02">
+
+
+  <meta name="baidu-site-verification" content="code-AFsYrPJanv">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Deeper Learning Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- Baidu Analytics bolun365.github.io mindgap.top -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b9cfbbc4efcace1fe10ea38340af6570";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?f34a42dbb9fdc92c38ce6bad6efe0a83";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics mindgap.top -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y70SG94YQY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Y70SG94YQY');
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        inlineMath: [['$','$']]
+        }
+    });
+</script>
+<script src="/assets/basic/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
+<script src="/assets/basic/jquery-3.6.0.min.js"></script>
+
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/basic/logo.png" alt="Deeper Learning"></a>
+        
+        <a class="site-title" href="/">
+          Deeper Learning
+          <span class="site-subtitle">faster, higher, stronger</span>
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/codes">CODES</a>
+            </li><li class="masthead__menu-item">
+              <a href="/math">MATH</a>
+            </li><li class="masthead__menu-item">
+              <a href="/projects">PROJECTS</a>
+            </li><li class="masthead__menu-item">
+              <a href="/competions">COMPETIONS</a>
+            </li><li class="masthead__menu-item">
+              <a href="/publications">PUBLICATIONS</a>
+            </li></ul>
+        
+        <button class="search__toggle" type="button">
+          <span class="visually-hidden">Toggle search</span>
+          <i class="fas fa-search"></i>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+  
+
+
+
+
+
+
+
+<div class="page__hero--overlay"
+  style=" background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/assets/basic/codes.jpeg');"
+>
+  
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+	  	
+          Od loss(yolox)</p>
+
+        
+      </h1>
+      
+        <p class="page__lead">```python
+#!/usr/bin/env python3</p>
+<h1 id="---codingutf-8---">-<em>- coding:utf-8 -</em>-</h1>
+<h1 id="copyright-c-megvii-inc-all-rights-reserved">Copyright (c) Megvii Inc. All rights reserved.</h1>
+
+</p >
+      
+      
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-clock" aria-hidden="true"></i>
+        
+          10 minute read
+        
+      </span>
+    
+  </p>
+
+
+      
+      
+    </div>
+  
+  
+</div>
+
+
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="https://www.mindgap.top/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">></span>
+      
+      
+        
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/categories/#codes" itemprop="item"><span itemprop="name">Codes</span></a>
+          <meta itemprop="position" content="2" />
+        </li>
+        <span class="sep">></span>
+      
+    
+      
+      
+        <li class="current">Od loss(yolox)</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+        <img src="/assets/basic/me.avatar.png" alt="beck" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">beck</h3>
+    
+    
+      <div class="author__bio" itemprop="description">
+        <p>dreammaker</p>
+
+      </div>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Shanghai, China</span>
+        </li>
+      
+
+      
+        
+          
+            <li><a href="https://github.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">GitHub</span></a></li>
+          
+        
+          
+            <li><a href="mailto:bolun365@163.com" rel="nofollow noopener noreferrer"><i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i><span class="label">Email</span></a></li>
+          
+        
+          
+            <li><a href="https://twitter.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i><span class="label">Twitter</span></a></li>
+          
+        
+          
+            <li><a href="https://instagram.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i><span class="label">Instagram</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Od loss(yolox)">
+    <meta itemprop="description" content="```python#!/usr/bin/env python3-- coding:utf-8 --Copyright (c) Megvii Inc. All rights reserved.">
+    <meta itemprop="datePublished" content="2022-03-21T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-cog"></i> On this page</h4></header>
+              
+
+            </nav>
+          </aside>
+        
+        <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
+# Copyright (c) Megvii Inc. All rights reserved.
+</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">loguru</span> <span class="kn">import</span> <span class="n">logger</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="n">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="n">F</span>
+
+<span class="kn">from</span> <span class="nn">yolox.utils</span> <span class="kn">import</span> <span class="n">bboxes_iou</span><span class="p">,</span> <span class="n">meshgrid</span>
+
+<span class="kn">from</span> <span class="nn">.losses</span> <span class="kn">import</span> <span class="n">IOUloss</span>
+<span class="kn">from</span> <span class="nn">.network_blocks</span> <span class="kn">import</span> <span class="n">BaseConv</span><span class="p">,</span> <span class="n">DWConv</span>
+
+<span class="k">def</span> <span class="nf">bboxes_iou</span><span class="p">(</span><span class="n">bboxes_a</span><span class="p">,</span> <span class="n">bboxes_b</span><span class="p">,</span> <span class="n">xyxy</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">bboxes_a</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">4</span> <span class="ow">or</span> <span class="n">bboxes_b</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">IndexError</span>
+
+    <span class="k">if</span> <span class="n">xyxy</span><span class="p">:</span>
+        <span class="c1"># torch.max([n_gt, 1, 2], [n_anchor, 2])
+</span>        <span class="c1"># [n_gt, n_anchor, 2],
+</span>        <span class="n">tl</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span><span class="n">bboxes_a</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">bboxes_b</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">br</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nb">min</span><span class="p">(</span><span class="n">bboxes_a</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">:],</span> <span class="n">bboxes_b</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:])</span>
+        <span class="n">area_a</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">prod</span><span class="p">(</span><span class="n">bboxes_a</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">-</span> <span class="n">bboxes_a</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">area_b</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">prod</span><span class="p">(</span><span class="n">bboxes_b</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">-</span> <span class="n">bboxes_b</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">tl</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nb">max</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">bboxes_a</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">bboxes_a</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">bboxes_b</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">bboxes_b</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">br</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nb">min</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">bboxes_a</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">bboxes_a</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">bboxes_b</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">bboxes_b</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="n">area_a</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">prod</span><span class="p">(</span><span class="n">bboxes_a</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:],</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">area_b</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">prod</span><span class="p">(</span><span class="n">bboxes_b</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:],</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># [n_gt, n_anchor]
+</span>    <span class="n">en</span> <span class="o">=</span> <span class="p">(</span><span class="n">tl</span> <span class="o">&lt;</span> <span class="n">br</span><span class="p">).</span><span class="nb">type</span><span class="p">(</span><span class="n">tl</span><span class="p">.</span><span class="nb">type</span><span class="p">()).</span><span class="n">prod</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># [n_gt, n_anchor]
+</span>    <span class="n">area_i</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">prod</span><span class="p">(</span><span class="n">br</span> <span class="o">-</span> <span class="n">tl</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">en</span>  <span class="c1"># * ((tl &lt; br).all())
+</span>    <span class="c1"># [n_gt, n_anchor]
+</span>    <span class="k">return</span> <span class="n">area_i</span> <span class="o">/</span> <span class="p">(</span><span class="n">area_a</span><span class="p">[:,</span> <span class="bp">None</span><span class="p">]</span> <span class="o">+</span> <span class="n">area_b</span> <span class="o">-</span> <span class="n">area_i</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">YOLOXHead</span><span class="p">(</span><span class="n">nn</span><span class="p">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">num_classes</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">strides</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">],</span>
+        <span class="n">in_channels</span><span class="o">=</span><span class="p">[</span><span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="mi">1024</span><span class="p">],</span>
+        <span class="n">act</span><span class="o">=</span><span class="s">"silu"</span><span class="p">,</span>
+        <span class="n">depthwise</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="s">"""
+        Args:
+            act (str): activation type of conv. Defalut value: "silu".
+            depthwise (bool): whether apply depthwise conv in conv branch. Defalut value: False.
+        """</span>
+        <span class="nb">super</span><span class="p">().</span><span class="n">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="p">.</span><span class="n">n_anchors</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num_classes</span> <span class="o">=</span> <span class="n">num_classes</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">decode_in_inference</span> <span class="o">=</span> <span class="bp">True</span>  <span class="c1"># for deploy, set to False
+</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">cls_convs</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">ModuleList</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">reg_convs</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">ModuleList</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">cls_preds</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">ModuleList</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">reg_preds</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">ModuleList</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">obj_preds</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">ModuleList</span><span class="p">()</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">stems</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">ModuleList</span><span class="p">()</span>
+        <span class="n">Conv</span> <span class="o">=</span> <span class="n">DWConv</span> <span class="k">if</span> <span class="n">depthwise</span> <span class="k">else</span> <span class="n">BaseConv</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">in_channels</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">stems</span><span class="p">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">BaseConv</span><span class="p">(</span>
+                    <span class="n">in_channels</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">in_channels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">width</span><span class="p">),</span>
+                    <span class="n">out_channels</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width</span><span class="p">),</span>
+                    <span class="n">ksize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">act</span><span class="o">=</span><span class="n">act</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">cls_convs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">nn</span><span class="p">.</span><span class="n">Sequential</span><span class="p">(</span>
+                    <span class="o">*</span><span class="p">[</span>
+                        <span class="n">Conv</span><span class="p">(</span>
+                            <span class="n">in_channels</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width</span><span class="p">),</span>
+                            <span class="n">out_channels</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width</span><span class="p">),</span>
+                            <span class="n">ksize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                            <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">act</span><span class="o">=</span><span class="n">act</span><span class="p">,</span>
+                        <span class="p">),</span>
+                        <span class="n">Conv</span><span class="p">(</span>
+                            <span class="n">in_channels</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width</span><span class="p">),</span>
+                            <span class="n">out_channels</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width</span><span class="p">),</span>
+                            <span class="n">ksize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                            <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">act</span><span class="o">=</span><span class="n">act</span><span class="p">,</span>
+                        <span class="p">),</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">reg_convs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">nn</span><span class="p">.</span><span class="n">Sequential</span><span class="p">(</span>
+                    <span class="o">*</span><span class="p">[</span>
+                        <span class="n">Conv</span><span class="p">(</span>
+                            <span class="n">in_channels</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width</span><span class="p">),</span>
+                            <span class="n">out_channels</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width</span><span class="p">),</span>
+                            <span class="n">ksize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                            <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">act</span><span class="o">=</span><span class="n">act</span><span class="p">,</span>
+                        <span class="p">),</span>
+                        <span class="n">Conv</span><span class="p">(</span>
+                            <span class="n">in_channels</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width</span><span class="p">),</span>
+                            <span class="n">out_channels</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width</span><span class="p">),</span>
+                            <span class="n">ksize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                            <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                            <span class="n">act</span><span class="o">=</span><span class="n">act</span><span class="p">,</span>
+                        <span class="p">),</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">cls_preds</span><span class="p">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">nn</span><span class="p">.</span><span class="n">Conv2d</span><span class="p">(</span>
+                    <span class="n">in_channels</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width</span><span class="p">),</span>
+                    <span class="n">out_channels</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">n_anchors</span> <span class="o">*</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_classes</span><span class="p">,</span>
+                    <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">reg_preds</span><span class="p">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">nn</span><span class="p">.</span><span class="n">Conv2d</span><span class="p">(</span>
+                    <span class="n">in_channels</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width</span><span class="p">),</span>
+                    <span class="n">out_channels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                    <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">obj_preds</span><span class="p">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">nn</span><span class="p">.</span><span class="n">Conv2d</span><span class="p">(</span>
+                    <span class="n">in_channels</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width</span><span class="p">),</span>
+                    <span class="n">out_channels</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">n_anchors</span> <span class="o">*</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">padding</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="p">.</span><span class="n">use_l1</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">l1_loss</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">L1Loss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s">"none"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">bcewithlog_loss</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">BCEWithLogitsLoss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s">"none"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">iou_loss</span> <span class="o">=</span> <span class="n">IOUloss</span><span class="p">(</span><span class="n">reduction</span><span class="o">=</span><span class="s">"none"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">strides</span> <span class="o">=</span> <span class="n">strides</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">grids</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_channels</span><span class="p">)</span> <span class="c1"># 这里的值无意义, 只是为了防止数组越界
+</span>
+    <span class="k">def</span> <span class="nf">initialize_biases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior_prob</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">conv</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">cls_preds</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">conv</span><span class="p">.</span><span class="n">bias</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">n_anchors</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">b</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">fill_</span><span class="p">(</span><span class="o">-</span><span class="n">math</span><span class="p">.</span><span class="n">log</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">prior_prob</span><span class="p">)</span> <span class="o">/</span> <span class="n">prior_prob</span><span class="p">))</span>
+            <span class="n">conv</span><span class="p">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">conv</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">obj_preds</span><span class="p">:</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">conv</span><span class="p">.</span><span class="n">bias</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">n_anchors</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">b</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">fill_</span><span class="p">(</span><span class="o">-</span><span class="n">math</span><span class="p">.</span><span class="n">log</span><span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">prior_prob</span><span class="p">)</span> <span class="o">/</span> <span class="n">prior_prob</span><span class="p">))</span>
+            <span class="n">conv</span><span class="p">.</span><span class="n">bias</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">nn</span><span class="p">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">requires_grad</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xin</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">imgs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">origin_preds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">x_shifts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">y_shifts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">expanded_strides</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="p">(</span><span class="n">cls_conv</span><span class="p">,</span> <span class="n">reg_conv</span><span class="p">,</span> <span class="n">stride_this_level</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span>
+            <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">cls_convs</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">reg_convs</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">strides</span><span class="p">,</span> <span class="n">xin</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">stems</span><span class="p">[</span><span class="n">k</span><span class="p">](</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">cls_x</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="n">reg_x</span> <span class="o">=</span> <span class="n">x</span>
+
+            <span class="c1"># self.n_anchors 为 1
+</span>            <span class="n">cls_feat</span> <span class="o">=</span> <span class="n">cls_conv</span><span class="p">(</span><span class="n">cls_x</span><span class="p">)</span>
+            <span class="n">cls_output</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">cls_preds</span><span class="p">[</span><span class="n">k</span><span class="p">](</span><span class="n">cls_feat</span><span class="p">)</span> <span class="c1"># channel=self.num_classes 
+</span>
+            <span class="n">reg_feat</span> <span class="o">=</span> <span class="n">reg_conv</span><span class="p">(</span><span class="n">reg_x</span><span class="p">)</span>
+            <span class="n">reg_output</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">reg_preds</span><span class="p">[</span><span class="n">k</span><span class="p">](</span><span class="n">reg_feat</span><span class="p">)</span>  <span class="c1"># channel=4
+</span>            <span class="n">obj_output</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">obj_preds</span><span class="p">[</span><span class="n">k</span><span class="p">](</span><span class="n">reg_feat</span><span class="p">)</span>  <span class="c1"># channel=1
+</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">training</span><span class="p">:</span>
+                <span class="c1"># [batch_size, (self.num_classes+4+1), h, w]
+</span>                <span class="n">output</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">([</span><span class="n">reg_output</span><span class="p">,</span> <span class="n">obj_output</span><span class="p">,</span> <span class="n">cls_output</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span> 
+                <span class="c1"># output: batch_size, self.n_anchors * hsize * wsize, n_ch
+</span>                <span class="c1"># grid: 1, hsize*wsize, 2
+</span>                <span class="c1"># output中box已被decoded, 下面的l1中的reg_output的box未被decode
+</span>                <span class="n">output</span><span class="p">,</span> <span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_output_and_grid</span><span class="p">(</span>
+                    <span class="n">output</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">stride_this_level</span><span class="p">,</span> <span class="n">xin</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nb">type</span><span class="p">()</span>
+                <span class="p">)</span> 
+                <span class="n">x_shifts</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">grid</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">])</span>  <span class="c1"># x_shifts: len(self.strides)个[1, hsize_x*wsize_x]
+</span>                <span class="n">y_shifts</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">grid</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">])</span>  <span class="c1"># y_shifts: len(self.strides)个[1, hsize_x*wsize_x]
+</span>                <span class="n">expanded_strides</span><span class="p">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">torch</span><span class="p">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">grid</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="p">.</span><span class="n">fill_</span><span class="p">(</span><span class="n">stride_this_level</span><span class="p">)</span>
+                    <span class="p">.</span><span class="n">type_as</span><span class="p">(</span><span class="n">xin</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="p">)</span>  <span class="c1"># expanded_strides: len(self.strides)个[1, hsize*wsize]  value=stride_this_level
+</span>                <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">use_l1</span><span class="p">:</span>
+                    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">reg_output</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">hsize</span><span class="p">,</span> <span class="n">wsize</span> <span class="o">=</span> <span class="n">reg_output</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+                    <span class="n">reg_output</span> <span class="o">=</span> <span class="n">reg_output</span><span class="p">.</span><span class="n">view</span><span class="p">(</span>
+                        <span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">n_anchors</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">hsize</span><span class="p">,</span> <span class="n">wsize</span>
+                    <span class="p">)</span>
+                    <span class="c1"># reg_output: batch_size, self.n_anchors * hsize * wsize, 4
+</span>                    <span class="c1"># box未被decode
+</span>                    <span class="n">reg_output</span> <span class="o">=</span> <span class="n">reg_output</span><span class="p">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">).</span><span class="n">reshape</span><span class="p">(</span>
+                        <span class="n">batch_size</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span>
+                    <span class="p">)</span>
+                    <span class="n">origin_preds</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">reg_output</span><span class="p">.</span><span class="n">clone</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">output</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">reg_output</span><span class="p">,</span> <span class="n">obj_output</span><span class="p">.</span><span class="n">sigmoid</span><span class="p">(),</span> <span class="n">cls_output</span><span class="p">.</span><span class="n">sigmoid</span><span class="p">()],</span> <span class="mi">1</span>
+                <span class="p">)</span>
+
+            <span class="n">outputs</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">training</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_losses</span><span class="p">(</span>
+                <span class="n">imgs</span><span class="p">,</span>
+                <span class="n">x_shifts</span><span class="p">,</span>
+                <span class="n">y_shifts</span><span class="p">,</span>
+                <span class="n">expanded_strides</span><span class="p">,</span>
+                <span class="n">labels</span><span class="p">,</span>
+                <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                <span class="n">origin_preds</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">xin</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">dtype</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">hw</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">]</span>
+            <span class="c1"># [batch, total_num_anchors, 85]
+</span>            <span class="n">outputs</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">x</span><span class="p">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">start_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span>
+            <span class="p">).</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">decode_in_inference</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">decode_outputs</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">xin</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nb">type</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">outputs</span>
+
+    <span class="k">def</span> <span class="nf">get_output_and_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+        <span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">grids</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="n">output</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">n_ch</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">+</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_classes</span>
+        <span class="n">hsize</span><span class="p">,</span> <span class="n">wsize</span> <span class="o">=</span> <span class="n">output</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="n">grid</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">!=</span> <span class="n">output</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]:</span>
+            <span class="n">yv</span><span class="p">,</span> <span class="n">xv</span> <span class="o">=</span> <span class="n">meshgrid</span><span class="p">([</span><span class="n">torch</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="n">hsize</span><span class="p">),</span> <span class="n">torch</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="n">wsize</span><span class="p">)])</span>
+            <span class="n">grid</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">stack</span><span class="p">((</span><span class="n">xv</span><span class="p">,</span> <span class="n">yv</span><span class="p">),</span> <span class="mi">2</span><span class="p">).</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">hsize</span><span class="p">,</span> <span class="n">wsize</span><span class="p">,</span> <span class="mi">2</span><span class="p">).</span><span class="nb">type</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">grids</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid</span>   <span class="c1"># 1, 1, hsize, wsize, 2
+</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">n_anchors</span><span class="p">,</span> <span class="n">n_ch</span><span class="p">,</span> <span class="n">hsize</span><span class="p">,</span> <span class="n">wsize</span><span class="p">)</span> <span class="c1"># n_ch = 4(reg_box) + 1(obj) + self.num_classes
+</span>        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span><span class="p">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">).</span><span class="n">reshape</span><span class="p">(</span>
+            <span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">n_anchors</span> <span class="o">*</span> <span class="n">hsize</span> <span class="o">*</span> <span class="n">wsize</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="p">)</span>  <span class="c1"># batch_size, self.n_anchors * hsize * wsize, n_ch
+</span>        <span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># 1, hsize*wsize, 2
+</span>        <span class="n">output</span><span class="p">[...,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">output</span><span class="p">[...,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">grid</span><span class="p">)</span> <span class="o">*</span> <span class="n">stride</span>
+        <span class="n">output</span><span class="p">[...,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="n">output</span><span class="p">[...,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span> <span class="o">*</span> <span class="n">stride</span>
+        <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">grid</span>
+
+    <span class="k">def</span> <span class="nf">decode_outputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+        <span class="n">grids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">strides</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">hsize</span><span class="p">,</span> <span class="n">wsize</span><span class="p">),</span> <span class="n">stride</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">hw</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">strides</span><span class="p">):</span>
+            <span class="n">yv</span><span class="p">,</span> <span class="n">xv</span> <span class="o">=</span> <span class="n">meshgrid</span><span class="p">([</span><span class="n">torch</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="n">hsize</span><span class="p">),</span> <span class="n">torch</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="n">wsize</span><span class="p">)])</span>
+            <span class="n">grid</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">stack</span><span class="p">((</span><span class="n">xv</span><span class="p">,</span> <span class="n">yv</span><span class="p">),</span> <span class="mi">2</span><span class="p">).</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">grids</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="n">grid</span><span class="p">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">strides</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">full</span><span class="p">((</span><span class="o">*</span><span class="n">shape</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">stride</span><span class="p">))</span>
+
+        <span class="n">grids</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span><span class="n">grids</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="nb">type</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">strides</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span><span class="n">strides</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="nb">type</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="n">outputs</span><span class="p">[...,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">outputs</span><span class="p">[...,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">grids</span><span class="p">)</span> <span class="o">*</span> <span class="n">strides</span>
+        <span class="n">outputs</span><span class="p">[...,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="n">outputs</span><span class="p">[...,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span> <span class="o">*</span> <span class="n">strides</span>
+        <span class="k">return</span> <span class="n">outputs</span>
+
+    <span class="c1"># labels: batch_size, num_gt, 5(class, box)
+</span>    <span class="c1"># expanded_strides: len(self.strides)个[1, hsize*wsize]  value=stride_this_level
+</span>    <span class="c1"># x_shifts: len(self.strides)个[1, hsize_x*wsize_x]
+</span>    <span class="k">def</span> <span class="nf">get_losses</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">imgs</span><span class="p">,</span>
+        <span class="n">x_shifts</span><span class="p">,</span>
+        <span class="n">y_shifts</span><span class="p">,</span>
+        <span class="n">expanded_strides</span><span class="p">,</span>
+        <span class="n">labels</span><span class="p">,</span>
+        <span class="n">outputs</span><span class="p">,</span>
+        <span class="n">origin_preds</span><span class="p">,</span>
+        <span class="n">dtype</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">bbox_preds</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span>  <span class="c1"># [batch, total_num_anchors, 4]
+</span>        <span class="n">obj_preds</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">4</span><span class="p">].</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># [batch, total_num_anchors, 1]
+</span>        <span class="n">cls_preds</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">5</span><span class="p">:]</span>  <span class="c1"># [batch, total_num_anchors, n_cls]
+</span>
+        <span class="c1"># calculate targets
+</span>        <span class="n">nlabel</span> <span class="o">=</span> <span class="p">(</span><span class="n">labels</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">).</span><span class="nb">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># number of objects
+</span>
+        <span class="n">total_num_anchors</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">x_shifts</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span><span class="n">x_shifts</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># [1, total_num_anchors]
+</span>        <span class="n">y_shifts</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span><span class="n">y_shifts</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># [1, total_num_anchors]
+</span>        <span class="n">expanded_strides</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span><span class="n">expanded_strides</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># [1, total_num_anchors]
+</span>        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">use_l1</span><span class="p">:</span>
+            <span class="n">origin_preds</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span><span class="n">origin_preds</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">cls_targets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">reg_targets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">l1_targets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">obj_targets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">fg_masks</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">num_fg</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">num_gts</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">for</span> <span class="n">batch_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">outputs</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">num_gt</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">nlabel</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">])</span>
+            <span class="n">num_gts</span> <span class="o">+=</span> <span class="n">num_gt</span>
+            <span class="k">if</span> <span class="n">num_gt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">cls_target</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">new_zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_classes</span><span class="p">))</span>
+                <span class="n">reg_target</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">new_zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+                <span class="n">l1_target</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">new_zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+                <span class="n">obj_target</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">new_zeros</span><span class="p">((</span><span class="n">total_num_anchors</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="n">fg_mask</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">.</span><span class="n">new_zeros</span><span class="p">(</span><span class="n">total_num_anchors</span><span class="p">).</span><span class="nb">bool</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">gt_bboxes_per_image</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">,</span> <span class="p">:</span><span class="n">num_gt</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+                <span class="n">gt_classes</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">,</span> <span class="p">:</span><span class="n">num_gt</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+                <span class="n">bboxes_preds_per_image</span> <span class="o">=</span> <span class="n">bbox_preds</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">]</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="p">(</span>
+                        <span class="n">gt_matched_classes</span><span class="p">,</span>
+                        <span class="n">fg_mask</span><span class="p">,</span>
+                        <span class="n">pred_ious_this_matching</span><span class="p">,</span>
+                        <span class="n">matched_gt_inds</span><span class="p">,</span>
+                        <span class="n">num_fg_img</span><span class="p">,</span>
+                    <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_assignments</span><span class="p">(</span>  <span class="c1"># noqa
+</span>                        <span class="n">batch_idx</span><span class="p">,</span>
+                        <span class="n">num_gt</span><span class="p">,</span>                     <span class="c1"># gt框数量
+</span>                        <span class="n">total_num_anchors</span><span class="p">,</span>          <span class="c1"># 网络产生的框总量, total_num_anchors
+</span>                        <span class="n">gt_bboxes_per_image</span><span class="p">,</span>        <span class="c1"># [num_gt, 4]    标识框
+</span>                        <span class="n">gt_classes</span><span class="p">,</span>                 <span class="c1"># [num_gt]       标识类别
+</span>                        <span class="n">bboxes_preds_per_image</span><span class="p">,</span>     <span class="c1"># [total_num_anchors, 4]  预测框
+</span>                        <span class="n">expanded_strides</span><span class="p">,</span>           <span class="c1"># [1, total_num_anchors] value=stride_this_level
+</span>                        <span class="n">x_shifts</span><span class="p">,</span>    <span class="c1"># [1, total_num_anchors]
+</span>                        <span class="n">y_shifts</span><span class="p">,</span>    <span class="c1"># [1, total_num_anchors]
+</span>                        <span class="n">cls_preds</span><span class="p">,</span>   <span class="c1"># [batch, total_num_anchors, n_cls]  预测框类别
+</span>                        <span class="n">bbox_preds</span><span class="p">,</span>  <span class="c1"># [batch, total_num_anchors, 4]      预测框坐标
+</span>                        <span class="n">obj_preds</span><span class="p">,</span>   <span class="c1"># [batch, total_num_anchors, 1]      预测框是否存在
+</span>                        <span class="n">labels</span><span class="p">,</span>      <span class="c1"># [batch, num_gt, 5]
+</span>                        <span class="n">imgs</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="nb">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="c1"># TODO: the string might change, consider a better way
+</span>                    <span class="k">if</span> <span class="s">"CUDA out of memory. "</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+                        <span class="k">raise</span>  <span class="c1"># RuntimeError might not caused by CUDA OOM
+</span>
+                    <span class="n">logger</span><span class="p">.</span><span class="n">error</span><span class="p">(</span>
+                        <span class="s">"OOM RuntimeError is raised due to the huge memory cost during label assignment. </span><span class="se">\
+</span><span class="s">                           CPU mode is applied in this batch. If you want to avoid this issue, </span><span class="se">\
+</span><span class="s">                           try to reduce the batch size or image size."</span>
+                    <span class="p">)</span>
+                    <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">empty_cache</span><span class="p">()</span>
+                    <span class="p">(</span>
+                        <span class="n">gt_matched_classes</span><span class="p">,</span>
+                        <span class="n">fg_mask</span><span class="p">,</span>
+                        <span class="n">pred_ious_this_matching</span><span class="p">,</span>
+                        <span class="n">matched_gt_inds</span><span class="p">,</span>
+                        <span class="n">num_fg_img</span><span class="p">,</span>
+                    <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_assignments</span><span class="p">(</span>  <span class="c1"># noqa
+</span>                        <span class="n">batch_idx</span><span class="p">,</span>
+                        <span class="n">num_gt</span><span class="p">,</span>
+                        <span class="n">total_num_anchors</span><span class="p">,</span>
+                        <span class="n">gt_bboxes_per_image</span><span class="p">,</span>
+                        <span class="n">gt_classes</span><span class="p">,</span>
+                        <span class="n">bboxes_preds_per_image</span><span class="p">,</span>
+                        <span class="n">expanded_strides</span><span class="p">,</span>
+                        <span class="n">x_shifts</span><span class="p">,</span>
+                        <span class="n">y_shifts</span><span class="p">,</span>
+                        <span class="n">cls_preds</span><span class="p">,</span>
+                        <span class="n">bbox_preds</span><span class="p">,</span>
+                        <span class="n">obj_preds</span><span class="p">,</span>
+                        <span class="n">labels</span><span class="p">,</span>
+                        <span class="n">imgs</span><span class="p">,</span>
+                        <span class="s">"cpu"</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+                <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">empty_cache</span><span class="p">()</span>
+                <span class="n">num_fg</span> <span class="o">+=</span> <span class="n">num_fg_img</span>
+
+                <span class="n">cls_target</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="n">one_hot</span><span class="p">(</span>
+                    <span class="n">gt_matched_classes</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">int64</span><span class="p">),</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_classes</span>
+                <span class="p">)</span> <span class="o">*</span> <span class="n">pred_ious_this_matching</span><span class="p">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">obj_target</span> <span class="o">=</span> <span class="n">fg_mask</span><span class="p">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">reg_target</span> <span class="o">=</span> <span class="n">gt_bboxes_per_image</span><span class="p">[</span><span class="n">matched_gt_inds</span><span class="p">]</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">use_l1</span><span class="p">:</span>
+                    <span class="n">l1_target</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_l1_target</span><span class="p">(</span>
+                        <span class="n">outputs</span><span class="p">.</span><span class="n">new_zeros</span><span class="p">((</span><span class="n">num_fg_img</span><span class="p">,</span> <span class="mi">4</span><span class="p">)),</span>
+                        <span class="n">gt_bboxes_per_image</span><span class="p">[</span><span class="n">matched_gt_inds</span><span class="p">],</span>
+                        <span class="n">expanded_strides</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">fg_mask</span><span class="p">],</span>
+                        <span class="n">x_shifts</span><span class="o">=</span><span class="n">x_shifts</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">fg_mask</span><span class="p">],</span>
+                        <span class="n">y_shifts</span><span class="o">=</span><span class="n">y_shifts</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">fg_mask</span><span class="p">],</span>
+                    <span class="p">)</span>
+
+            <span class="n">cls_targets</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">cls_target</span><span class="p">)</span>
+            <span class="n">reg_targets</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">reg_target</span><span class="p">)</span>
+            <span class="n">obj_targets</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj_target</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="p">))</span>
+            <span class="n">fg_masks</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">fg_mask</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">use_l1</span><span class="p">:</span>
+                <span class="n">l1_targets</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">l1_target</span><span class="p">)</span>
+
+        <span class="n">cls_targets</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span><span class="n">cls_targets</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">reg_targets</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span><span class="n">reg_targets</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">obj_targets</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span><span class="n">obj_targets</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">fg_masks</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span><span class="n">fg_masks</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">use_l1</span><span class="p">:</span>
+            <span class="n">l1_targets</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">cat</span><span class="p">(</span><span class="n">l1_targets</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">num_fg</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">num_fg</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">loss_iou</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">iou_loss</span><span class="p">(</span><span class="n">bbox_preds</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)[</span><span class="n">fg_masks</span><span class="p">],</span> <span class="n">reg_targets</span><span class="p">)</span>
+        <span class="p">).</span><span class="nb">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">num_fg</span>
+        <span class="n">loss_obj</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">bcewithlog_loss</span><span class="p">(</span><span class="n">obj_preds</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">obj_targets</span><span class="p">)</span>
+        <span class="p">).</span><span class="nb">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">num_fg</span>
+        <span class="n">loss_cls</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">bcewithlog_loss</span><span class="p">(</span>
+                <span class="n">cls_preds</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_classes</span><span class="p">)[</span><span class="n">fg_masks</span><span class="p">],</span> <span class="n">cls_targets</span>
+            <span class="p">)</span>
+        <span class="p">).</span><span class="nb">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">num_fg</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="p">.</span><span class="n">use_l1</span><span class="p">:</span>
+            <span class="n">loss_l1</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="p">.</span><span class="n">l1_loss</span><span class="p">(</span><span class="n">origin_preds</span><span class="p">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)[</span><span class="n">fg_masks</span><span class="p">],</span> <span class="n">l1_targets</span><span class="p">)</span>
+            <span class="p">).</span><span class="nb">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">num_fg</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">loss_l1</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="n">reg_weight</span> <span class="o">=</span> <span class="mf">5.0</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">reg_weight</span> <span class="o">*</span> <span class="n">loss_iou</span> <span class="o">+</span> <span class="n">loss_obj</span> <span class="o">+</span> <span class="n">loss_cls</span> <span class="o">+</span> <span class="n">loss_l1</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">loss</span><span class="p">,</span>
+            <span class="n">reg_weight</span> <span class="o">*</span> <span class="n">loss_iou</span><span class="p">,</span>
+            <span class="n">loss_obj</span><span class="p">,</span>
+            <span class="n">loss_cls</span><span class="p">,</span>
+            <span class="n">loss_l1</span><span class="p">,</span>
+            <span class="n">num_fg</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">num_gts</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_l1_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l1_target</span><span class="p">,</span> <span class="n">gt</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">x_shifts</span><span class="p">,</span> <span class="n">y_shifts</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">):</span>
+        <span class="n">l1_target</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">gt</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">stride</span> <span class="o">-</span> <span class="n">x_shifts</span>
+        <span class="n">l1_target</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">gt</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">stride</span> <span class="o">-</span> <span class="n">y_shifts</span>
+        <span class="n">l1_target</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="n">gt</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">stride</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
+        <span class="n">l1_target</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="n">gt</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="n">stride</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">l1_target</span>
+
+
+    <span class="c1">#num_gt,                     # gt框数量
+</span>    <span class="c1">#total_num_anchors,          # 网络产生的框总量, total_num_anchors
+</span>    <span class="c1">#gt_bboxes_per_image,        # [num_gt, 4]    标识框
+</span>    <span class="c1">#gt_classes,                 # [num_gt]       标识类别
+</span>    <span class="c1">#bboxes_preds_per_image,     # [total_num_anchors, 4]  预测框
+</span>    <span class="c1">#expanded_strides            # [1, total_num_anchors] value=stride_this_level
+</span>    <span class="c1">#x_shifts,    # [1, total_num_anchors]
+</span>    <span class="c1">#y_shifts,    # [1, total_num_anchors]
+</span>    <span class="c1">#cls_preds,   # [batch, total_num_anchors, n_cls]  预测框类别
+</span>    <span class="c1">#bbox_preds,  # [batch, total_num_anchors, 4]      预测框坐标
+</span>    <span class="c1">#obj_preds,   # [batch, total_num_anchors, 1]      预测框是否存在
+</span>    <span class="c1">#labels,      # [batch, num_gt, 5]
+</span>    <span class="c1">#imgs,
+</span>    <span class="o">@</span><span class="n">torch</span><span class="p">.</span><span class="n">no_grad</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">get_assignments</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">batch_idx</span><span class="p">,</span>
+        <span class="n">num_gt</span><span class="p">,</span>
+        <span class="n">total_num_anchors</span><span class="p">,</span>
+        <span class="n">gt_bboxes_per_image</span><span class="p">,</span>
+        <span class="n">gt_classes</span><span class="p">,</span>
+        <span class="n">bboxes_preds_per_image</span><span class="p">,</span>
+        <span class="n">expanded_strides</span><span class="p">,</span>
+        <span class="n">x_shifts</span><span class="p">,</span>
+        <span class="n">y_shifts</span><span class="p">,</span>
+        <span class="n">cls_preds</span><span class="p">,</span>
+        <span class="n">bbox_preds</span><span class="p">,</span>
+        <span class="n">obj_preds</span><span class="p">,</span>
+        <span class="n">labels</span><span class="p">,</span>
+        <span class="n">imgs</span><span class="p">,</span>
+        <span class="n">mode</span><span class="o">=</span><span class="s">"gpu"</span><span class="p">,</span>
+    <span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s">"cpu"</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"------------CPU Mode for This Batch-------------"</span><span class="p">)</span>
+            <span class="n">gt_bboxes_per_image</span> <span class="o">=</span> <span class="n">gt_bboxes_per_image</span><span class="p">.</span><span class="n">cpu</span><span class="p">().</span><span class="nb">float</span><span class="p">()</span>
+            <span class="n">bboxes_preds_per_image</span> <span class="o">=</span> <span class="n">bboxes_preds_per_image</span><span class="p">.</span><span class="n">cpu</span><span class="p">().</span><span class="nb">float</span><span class="p">()</span>
+            <span class="n">gt_classes</span> <span class="o">=</span> <span class="n">gt_classes</span><span class="p">.</span><span class="n">cpu</span><span class="p">().</span><span class="nb">float</span><span class="p">()</span>
+            <span class="n">expanded_strides</span> <span class="o">=</span> <span class="n">expanded_strides</span><span class="p">.</span><span class="n">cpu</span><span class="p">().</span><span class="nb">float</span><span class="p">()</span>
+            <span class="n">x_shifts</span> <span class="o">=</span> <span class="n">x_shifts</span><span class="p">.</span><span class="n">cpu</span><span class="p">()</span>
+            <span class="n">y_shifts</span> <span class="o">=</span> <span class="n">y_shifts</span><span class="p">.</span><span class="n">cpu</span><span class="p">()</span>
+
+        <span class="n">fg_mask</span><span class="p">,</span> <span class="n">is_in_boxes_and_center</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">get_in_boxes_info</span><span class="p">(</span>
+            <span class="n">gt_bboxes_per_image</span><span class="p">,</span>
+            <span class="n">expanded_strides</span><span class="p">,</span>
+            <span class="n">x_shifts</span><span class="p">,</span>
+            <span class="n">y_shifts</span><span class="p">,</span>
+            <span class="n">total_num_anchors</span><span class="p">,</span>
+            <span class="n">num_gt</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># fg_mask:                 [total_num_anchors] 锚框中点被gt框或放大后的gt框覆盖
+</span>        <span class="c1"># is_in_boxes_and_center:  [n_gt, total_num_anchors] 锚框中点被gt框覆盖
+</span>
+        <span class="c1">#bboxes_preds_per_image,     # [n_anchor, 4]  预测框
+</span>        <span class="n">bboxes_preds_per_image</span> <span class="o">=</span> <span class="n">bboxes_preds_per_image</span><span class="p">[</span><span class="n">fg_mask</span><span class="p">]</span>
+        <span class="n">cls_preds_</span> <span class="o">=</span> <span class="n">cls_preds</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">][</span><span class="n">fg_mask</span><span class="p">]</span>
+        <span class="n">obj_preds_</span> <span class="o">=</span> <span class="n">obj_preds</span><span class="p">[</span><span class="n">batch_idx</span><span class="p">][</span><span class="n">fg_mask</span><span class="p">]</span>
+        <span class="n">num_in_boxes_anchor</span> <span class="o">=</span> <span class="n">bboxes_preds_per_image</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s">"cpu"</span><span class="p">:</span>
+            <span class="n">gt_bboxes_per_image</span> <span class="o">=</span> <span class="n">gt_bboxes_per_image</span><span class="p">.</span><span class="n">cpu</span><span class="p">()</span>
+            <span class="n">bboxes_preds_per_image</span> <span class="o">=</span> <span class="n">bboxes_preds_per_image</span><span class="p">.</span><span class="n">cpu</span><span class="p">()</span>
+
+        <span class="c1"># [n_gt, n_anchor]
+</span>        <span class="n">pair_wise_ious</span> <span class="o">=</span> <span class="n">bboxes_iou</span><span class="p">(</span><span class="n">gt_bboxes_per_image</span><span class="p">,</span> <span class="n">bboxes_preds_per_image</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+  
+        <span class="c1">#gt_classes,                 # [num_gt]       标识类别
+</span>        <span class="c1"># [n_gt, n_anchor]
+</span>        <span class="n">gt_cls_per_image</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">F</span><span class="p">.</span><span class="n">one_hot</span><span class="p">(</span><span class="n">gt_classes</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="p">.</span><span class="n">int64</span><span class="p">),</span> <span class="bp">self</span><span class="p">.</span><span class="n">num_classes</span><span class="p">)</span>
+            <span class="p">.</span><span class="nb">float</span><span class="p">()</span>
+            <span class="p">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_in_boxes_anchor</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="c1"># [n_gt, n_anchor]
+</span>        <span class="n">pair_wise_ious_loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">torch</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="n">pair_wise_ious</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s">"cpu"</span><span class="p">:</span>
+            <span class="c1">#cls_preds,   # [n_anchor, n_cls]  预测框类别
+</span>            <span class="c1">#obj_preds,   # [n_anchor, 1]      预测框是否存在
+</span>            <span class="n">cls_preds_</span><span class="p">,</span> <span class="n">obj_preds_</span> <span class="o">=</span> <span class="n">cls_preds_</span><span class="p">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">obj_preds_</span><span class="p">.</span><span class="n">cpu</span><span class="p">()</span>
+
+        <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="n">cuda</span><span class="p">.</span><span class="n">amp</span><span class="p">.</span><span class="n">autocast</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+            <span class="c1">#cls_preds,   # [n_gt, n_anchor, n_cls]  预测框类别
+</span>            <span class="c1">#obj_preds,   # [n_gt, n_anchor, 1]      预测框是否存在
+</span>            <span class="n">cls_preds_</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">cls_preds_</span><span class="p">.</span><span class="nb">float</span><span class="p">().</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="n">repeat</span><span class="p">(</span><span class="n">num_gt</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="n">sigmoid_</span><span class="p">()</span>
+                <span class="o">*</span> <span class="n">obj_preds_</span><span class="p">.</span><span class="nb">float</span><span class="p">().</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="n">repeat</span><span class="p">(</span><span class="n">num_gt</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="n">sigmoid_</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="c1"># [n_gt, n_anchor]
+</span>            <span class="n">pair_wise_cls_loss</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="n">binary_cross_entropy</span><span class="p">(</span>
+                <span class="n">cls_preds_</span><span class="p">.</span><span class="n">sqrt_</span><span class="p">(),</span> <span class="n">gt_cls_per_image</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s">"none"</span>
+            <span class="p">).</span><span class="nb">sum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">cls_preds_</span>
+
+        <span class="n">cost</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">pair_wise_cls_loss</span>
+            <span class="o">+</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">pair_wise_ious_loss</span>
+            <span class="o">+</span> <span class="mf">100000.0</span> <span class="o">*</span> <span class="p">(</span><span class="o">~</span><span class="n">is_in_boxes_and_center</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># cost [n_gt, n_anchor]
+</span>        <span class="c1"># pair_wise_ious [n_gt, n_anchor]
+</span>        <span class="c1"># gt_classes     [num_gt]
+</span>        <span class="p">(</span>
+            <span class="n">num_fg</span><span class="p">,</span>
+            <span class="n">gt_matched_classes</span><span class="p">,</span>
+            <span class="n">pred_ious_this_matching</span><span class="p">,</span>
+            <span class="n">matched_gt_inds</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="p">.</span><span class="n">dynamic_k_matching</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">pair_wise_ious</span><span class="p">,</span> <span class="n">gt_classes</span><span class="p">,</span> <span class="n">num_gt</span><span class="p">,</span> <span class="n">fg_mask</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">pair_wise_cls_loss</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">pair_wise_ious</span><span class="p">,</span> <span class="n">pair_wise_ious_loss</span>
+        
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s">"cpu"</span><span class="p">:</span>
+            <span class="n">gt_matched_classes</span> <span class="o">=</span> <span class="n">gt_matched_classes</span><span class="p">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="n">fg_mask</span> <span class="o">=</span> <span class="n">fg_mask</span><span class="p">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="n">pred_ious_this_matching</span> <span class="o">=</span> <span class="n">pred_ious_this_matching</span><span class="p">.</span><span class="n">cuda</span><span class="p">()</span>
+            <span class="n">matched_gt_inds</span> <span class="o">=</span> <span class="n">matched_gt_inds</span><span class="p">.</span><span class="n">cuda</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">gt_matched_classes</span><span class="p">,</span>
+            <span class="n">fg_mask</span><span class="p">,</span>
+            <span class="n">pred_ious_this_matching</span><span class="p">,</span>
+            <span class="n">matched_gt_inds</span><span class="p">,</span>
+            <span class="n">num_fg</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1">#gt_bboxes_per_image,        # [num_gt, 4]    标识框
+</span>    <span class="c1">#expanded_strides,           # [1, total_num_anchors] value=stride_this_level
+</span>    <span class="c1">#x_shifts,    # [1, total_num_anchors]
+</span>    <span class="c1">#y_shifts,    # [1, total_num_anchors]
+</span>    <span class="c1">#total_num_anchors,          # 网络产生的框总量, total_num_anchors
+</span>    <span class="c1">#num_gt,                     # gt框数量
+</span>    <span class="k">def</span> <span class="nf">get_in_boxes_info</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">gt_bboxes_per_image</span><span class="p">,</span>
+        <span class="n">expanded_strides</span><span class="p">,</span>
+        <span class="n">x_shifts</span><span class="p">,</span>
+        <span class="n">y_shifts</span><span class="p">,</span>
+        <span class="n">total_num_anchors</span><span class="p">,</span>
+        <span class="n">num_gt</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># expanded_strides_per_image  [total_num_anchors] value=stride_this_level
+</span>        <span class="n">expanded_strides_per_image</span> <span class="o">=</span> <span class="n">expanded_strides</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">x_shifts_per_image</span> <span class="o">=</span> <span class="n">x_shifts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">expanded_strides_per_image</span>
+        <span class="n">y_shifts_per_image</span> <span class="o">=</span> <span class="n">y_shifts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">expanded_strides_per_image</span>
+        <span class="n">x_centers_per_image</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">x_shifts_per_image</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">expanded_strides_per_image</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">num_gt</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># [total_num_anchors] -&gt; [n_gt, total_num_anchors]  复制n_gt遍, 每行相同
+</span>        <span class="n">y_centers_per_image</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">y_shifts_per_image</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">expanded_strides_per_image</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">num_gt</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">gt_bboxes_per_image_l</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">gt_bboxes_per_image</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">gt_bboxes_per_image</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+            <span class="p">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">total_num_anchors</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># [n_gt] -&gt; [n_gt, total_num_anchors]  复制n_anchor遍, 每列相同
+</span>        <span class="n">gt_bboxes_per_image_r</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">gt_bboxes_per_image</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">gt_bboxes_per_image</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+            <span class="p">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">total_num_anchors</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">gt_bboxes_per_image_t</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">gt_bboxes_per_image</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">gt_bboxes_per_image</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">])</span>
+            <span class="p">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">total_num_anchors</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">gt_bboxes_per_image_b</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">gt_bboxes_per_image</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">gt_bboxes_per_image</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">])</span>
+            <span class="p">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">total_num_anchors</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1">#  [n_gt, total_num_anchors] 
+</span>        <span class="n">b_l</span> <span class="o">=</span> <span class="n">x_centers_per_image</span> <span class="o">-</span> <span class="n">gt_bboxes_per_image_l</span>  <span class="c1"># 每个锚框中点 减 每个gt框左边界
+</span>        <span class="n">b_r</span> <span class="o">=</span> <span class="n">gt_bboxes_per_image_r</span> <span class="o">-</span> <span class="n">x_centers_per_image</span>  <span class="c1"># 每个gt框右边界 减 每个锚框中点
+</span>        <span class="n">b_t</span> <span class="o">=</span> <span class="n">y_centers_per_image</span> <span class="o">-</span> <span class="n">gt_bboxes_per_image_t</span>
+        <span class="n">b_b</span> <span class="o">=</span> <span class="n">gt_bboxes_per_image_b</span> <span class="o">-</span> <span class="n">y_centers_per_image</span>
+        <span class="n">bbox_deltas</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">stack</span><span class="p">([</span><span class="n">b_l</span><span class="p">,</span> <span class="n">b_t</span><span class="p">,</span> <span class="n">b_r</span><span class="p">,</span> <span class="n">b_b</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># [n_gt, total_num_anchors, 4] 
+</span>
+        <span class="n">is_in_boxes</span> <span class="o">=</span> <span class="n">bbox_deltas</span><span class="p">.</span><span class="nb">min</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">).</span><span class="n">values</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="c1"># [n_gt, total_num_anchors] 4个中最小的值大于0
+</span>        <span class="n">is_in_boxes_all</span> <span class="o">=</span> <span class="n">is_in_boxes</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>       <span class="c1"># [n_anchor]       锚框中点在gt中
+</span>        <span class="c1"># in fixed center
+</span>
+        <span class="n">center_radius</span> <span class="o">=</span> <span class="mf">2.5</span>
+
+        <span class="c1"># gt_bboxes_per_image:         [num_gt, 4] 
+</span>        <span class="c1"># expanded_strides_per_image:  [total_num_anchors] value=stride_this_level
+</span>        <span class="c1"># 被减数: [num_gt, total_num_anchors] 原gt中x1复制total_num_anchors次
+</span>        <span class="c1"># 结果: gt_l向左移center_radius个stride(相对不同的锚框位移不同)
+</span>        <span class="n">gt_bboxes_per_image_l</span> <span class="o">=</span> <span class="p">(</span><span class="n">gt_bboxes_per_image</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]).</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">repeat</span><span class="p">(</span>
+            <span class="mi">1</span><span class="p">,</span> <span class="n">total_num_anchors</span>
+        <span class="p">)</span> <span class="o">-</span> <span class="n">center_radius</span> <span class="o">*</span> <span class="n">expanded_strides_per_image</span><span class="p">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  
+        <span class="n">gt_bboxes_per_image_r</span> <span class="o">=</span> <span class="p">(</span><span class="n">gt_bboxes_per_image</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]).</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">repeat</span><span class="p">(</span>
+            <span class="mi">1</span><span class="p">,</span> <span class="n">total_num_anchors</span>
+        <span class="p">)</span> <span class="o">+</span> <span class="n">center_radius</span> <span class="o">*</span> <span class="n">expanded_strides_per_image</span><span class="p">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">gt_bboxes_per_image_t</span> <span class="o">=</span> <span class="p">(</span><span class="n">gt_bboxes_per_image</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]).</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">repeat</span><span class="p">(</span>
+            <span class="mi">1</span><span class="p">,</span> <span class="n">total_num_anchors</span>
+        <span class="p">)</span> <span class="o">-</span> <span class="n">center_radius</span> <span class="o">*</span> <span class="n">expanded_strides_per_image</span><span class="p">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">gt_bboxes_per_image_b</span> <span class="o">=</span> <span class="p">(</span><span class="n">gt_bboxes_per_image</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]).</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">repeat</span><span class="p">(</span>
+            <span class="mi">1</span><span class="p">,</span> <span class="n">total_num_anchors</span>
+        <span class="p">)</span> <span class="o">+</span> <span class="n">center_radius</span> <span class="o">*</span> <span class="n">expanded_strides_per_image</span><span class="p">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># [n_gt, total_num_anchors] 
+</span>        <span class="n">c_l</span> <span class="o">=</span> <span class="n">x_centers_per_image</span> <span class="o">-</span> <span class="n">gt_bboxes_per_image_l</span>  <span class="c1"># 每个锚框中点 减 每个gt框(放大后)左边界
+</span>        <span class="n">c_r</span> <span class="o">=</span> <span class="n">gt_bboxes_per_image_r</span> <span class="o">-</span> <span class="n">x_centers_per_image</span>
+        <span class="n">c_t</span> <span class="o">=</span> <span class="n">y_centers_per_image</span> <span class="o">-</span> <span class="n">gt_bboxes_per_image_t</span>
+        <span class="n">c_b</span> <span class="o">=</span> <span class="n">gt_bboxes_per_image_b</span> <span class="o">-</span> <span class="n">y_centers_per_image</span>
+        <span class="n">center_deltas</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">stack</span><span class="p">([</span><span class="n">c_l</span><span class="p">,</span> <span class="n">c_t</span><span class="p">,</span> <span class="n">c_r</span><span class="p">,</span> <span class="n">c_b</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># [n_gt, n_anchor, 4] 
+</span>        <span class="n">is_in_centers</span> <span class="o">=</span> <span class="n">center_deltas</span><span class="p">.</span><span class="nb">min</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">).</span><span class="n">values</span> <span class="o">&gt;</span> <span class="mf">0.0</span> 
+        <span class="n">is_in_centers_all</span> <span class="o">=</span> <span class="n">is_in_centers</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>      <span class="c1"># [n_anchor]       锚框中在放大后的gt框中
+</span>
+        <span class="c1"># in boxes and in centers
+</span>        <span class="c1">#  [total_num_anchors] 锚框中点被gt框或放大后的gt框覆盖
+</span>        <span class="n">is_in_boxes_anchor</span> <span class="o">=</span> <span class="n">is_in_boxes_all</span> <span class="o">|</span> <span class="n">is_in_centers_all</span>
+
+        <span class="c1">#  [n_gt, total_num_anchors] 锚框中点被gt框覆盖
+</span>        <span class="n">is_in_boxes_and_center</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">is_in_boxes</span><span class="p">[:,</span> <span class="n">is_in_boxes_anchor</span><span class="p">]</span> <span class="o">&amp;</span> <span class="n">is_in_centers</span><span class="p">[:,</span> <span class="n">is_in_boxes_anchor</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">is_in_boxes_anchor</span><span class="p">,</span> <span class="n">is_in_boxes_and_center</span>
+
+    <span class="c1"># cost [n_gt, n_anchor]
+</span>    <span class="c1"># pair_wise_ious [n_gt, n_anchor]
+</span>    <span class="c1"># gt_classes     [num_gt]
+</span>    <span class="k">def</span> <span class="nf">dynamic_k_matching</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">pair_wise_ious</span><span class="p">,</span> <span class="n">gt_classes</span><span class="p">,</span> <span class="n">num_gt</span><span class="p">,</span> <span class="n">fg_mask</span><span class="p">):</span>
+        <span class="c1"># Dynamic K
+</span>        <span class="c1"># ---------------------------------------------------------------
+</span>        <span class="n">matching_matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="p">.</span><span class="n">uint8</span><span class="p">)</span>
+
+        <span class="n">ious_in_boxes_matrix</span> <span class="o">=</span> <span class="n">pair_wise_ious</span>
+        <span class="n">n_candidate_k</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">ious_in_boxes_matrix</span><span class="p">.</span><span class="n">size</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># [n_gt, &lt;10]
+</span>        <span class="n">topk_ious</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">topk</span><span class="p">(</span><span class="n">ious_in_boxes_matrix</span><span class="p">,</span> <span class="n">n_candidate_k</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># [n_gt] min=1表示至少匹配一个框
+</span>        <span class="n">dynamic_ks</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">topk_ious</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nb">int</span><span class="p">(),</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">dynamic_ks</span> <span class="o">=</span> <span class="n">dynamic_ks</span><span class="p">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="c1"># 对于每个gt框, 放大后, 锚框中点如果被覆盖. 计算iou的时候就累加进来.
+</span>        <span class="c1"># 一个gt框匹配多少个锚框, 由最后的iou累加结果定.
+</span>        <span class="k">for</span> <span class="n">gt_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_gt</span><span class="p">):</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">pos_idx</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">topk</span><span class="p">(</span>
+                <span class="n">cost</span><span class="p">[</span><span class="n">gt_idx</span><span class="p">],</span> <span class="n">k</span><span class="o">=</span><span class="n">dynamic_ks</span><span class="p">[</span><span class="n">gt_idx</span><span class="p">],</span> <span class="n">largest</span><span class="o">=</span><span class="bp">False</span>
+            <span class="p">)</span>
+            <span class="n">matching_matrix</span><span class="p">[</span><span class="n">gt_idx</span><span class="p">][</span><span class="n">pos_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="k">del</span> <span class="n">topk_ious</span><span class="p">,</span> <span class="n">dynamic_ks</span><span class="p">,</span> <span class="n">pos_idx</span>
+
+        <span class="c1"># 一个锚框只能匹配一个gt框, cost最小的优先匹配
+</span>        <span class="c1"># anchor_matching_gt [n_anchor]
+</span>        <span class="n">anchor_matching_gt</span> <span class="o">=</span> <span class="n">matching_matrix</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">anchor_matching_gt</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">).</span><span class="nb">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">cost_argmin</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="nb">min</span><span class="p">(</span><span class="n">cost</span><span class="p">[:,</span> <span class="n">anchor_matching_gt</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">matching_matrix</span><span class="p">[:,</span> <span class="n">anchor_matching_gt</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*=</span> <span class="mi">0</span>
+            <span class="n">matching_matrix</span><span class="p">[</span><span class="n">cost_argmin</span><span class="p">,</span> <span class="n">anchor_matching_gt</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c1"># [n_anchor] 锚框是否有匹配到gt框
+</span>        <span class="n">fg_mask_inboxes</span> <span class="o">=</span> <span class="n">matching_matrix</span><span class="p">.</span><span class="nb">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="c1"># 锚框数量(匹配到gt框的)
+</span>        <span class="n">num_fg</span> <span class="o">=</span> <span class="n">fg_mask_inboxes</span><span class="p">.</span><span class="nb">sum</span><span class="p">().</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="c1"># fg_mask:                 [total_num_anchors] 锚框中点被gt框或放大后的gt框覆盖
+</span>        <span class="c1"># fg_mask更新
+</span>        <span class="n">fg_mask</span><span class="p">[</span><span class="n">fg_mask</span><span class="p">.</span><span class="n">clone</span><span class="p">()]</span> <span class="o">=</span> <span class="n">fg_mask_inboxes</span>
+
+        <span class="c1"># 锚框匹配的gt框的id
+</span>        <span class="n">matched_gt_inds</span> <span class="o">=</span> <span class="n">matching_matrix</span><span class="p">[:,</span> <span class="n">fg_mask_inboxes</span><span class="p">].</span><span class="n">argmax</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># gt_classes,                 # [num_gt]       标识类别
+</span>        <span class="c1"># 锚框匹配的gt框的类别
+</span>        <span class="n">gt_matched_classes</span> <span class="o">=</span> <span class="n">gt_classes</span><span class="p">[</span><span class="n">matched_gt_inds</span><span class="p">]</span>
+
+        <span class="c1"># 锚框与匹配的gt框的iou
+</span>        <span class="n">pred_ious_this_matching</span> <span class="o">=</span> <span class="p">(</span><span class="n">matching_matrix</span> <span class="o">*</span> <span class="n">pair_wise_ious</span><span class="p">).</span><span class="nb">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span>
+            <span class="n">fg_mask_inboxes</span>
+        <span class="p">]</span>
+        <span class="k">return</span> <span class="n">num_fg</span><span class="p">,</span> <span class="n">gt_matched_classes</span><span class="p">,</span> <span class="n">pred_ious_this_matching</span><span class="p">,</span> <span class="n">matched_gt_inds</span>
+</code></pre></div></div>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/categories/#codes" class="page__taxonomy-item" rel="tag">codes</a>
+    
+    </span>
+  </p>
+
+
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2022-03-21T00:00:00+08:00">March 21, 2022</time></p>
+
+
+      </footer>
+
+      <section class="page__share">
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Od+loss%28yolox%29%20https%3A%2F%2Fwww.mindgap.top%2Fcodes%2FOD-loss%28YOLOX%29%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.mindgap.top%2Fcodes%2FOD-loss%28YOLOX%29%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/math/%E5%87%A0%E4%BD%95%E5%8E%9F%E6%9C%AC%E4%B8%8E%E5%B0%BA%E8%A7%84%E5%81%9A%E5%9B%BE/" class="pagination--pager" title="几何原本与尺规做图
+">Previous</a>
+    
+    
+      <a href="/codes/%E5%9B%BE%E7%89%87%E4%BF%A1%E6%81%AF%E7%BB%9F%E8%AE%A1/" class="pagination--pager" title="图片信息统计
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+      <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">Comments(Cannot be displayed in mainland China temporarily)</h4>
+      <section id="disqus_thread"></section>
+    
+</div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/random_perspective%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88(yolox)/" rel="permalink">Random_perspective代码注释版(yolox)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-29T00:00:00+08:00">March 29, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/mosaic%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88(yolox)/" rel="permalink">Mosaic代码注释版(yolox)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-29T00:00:00+08:00">March 29, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/oss2%E6%89%B9%E9%87%8F%E4%B8%8B%E8%BD%BD%E7%9B%AE%E5%BD%95-%E6%96%AD%E7%82%B9%E7%BB%AD%E4%BC%A0/" rel="permalink">Oss2批量下载目录 断点续传
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-22T00:00:00+08:00">March 22, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          less than 1 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">阿里云oss目录下载, 可断点续传
+</p>
+  </article>
+</div>
+
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">
+    
+      <div class="archive__item-teaser">
+        <img src="/assets/basic/teaser_default.jpg" alt="">
+      </div>
+    
+    <h2 class="archive__item-title no_toc" itemprop="headline">
+      
+        <a href="/codes/mixup%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88(yolox)/" rel="permalink">Mixup代码注释版(yolox)
+</a>
+      
+    </h2>
+    
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-fw fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-03-22T00:00:00+08:00">March 22, 2022</time>
+      </span>
+    
+
+    <span class="page__meta-sep"></span>
+
+    
+      
+      
+
+      <span class="page__meta-readtime">
+        <i class="far fa-fw fa-clock" aria-hidden="true"></i>
+        
+          2 minute read
+        
+      </span>
+    
+  </p>
+
+
+    <p class="archive__item-excerpt" itemprop="description">YOLOX中loss的计算以及框的匹配机制 代码详细注释
+</p>
+  </article>
+</div>
+
+        
+      </div>
+    </div>
+  
+  
+</div>
+
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><form class="search-content__form" onkeydown="return event.key != 'Enter';">
+    <label class="sr-only" for="search">
+      Enter your search term...
+    </label>
+    <input type="search" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+  </form>
+  <div id="results" class="results"></div></div>
+
+      </div>
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <script src="/assets/basic/mermaid.min.js"></script>
+<script>
+  $(document).ready(function () {
+    mermaid.initialize({
+      startOnLoad:true,
+      theme: "default",
+    });
+    window.mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
+  });
+</script>
+
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+      
+        
+          <li><a href="https://twitter.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-twitter-square" aria-hidden="true"></i> Twitter</a></li>
+        
+      
+        
+          <li><a href="https://github.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+        
+      
+        
+          <li><a href="https://instagram.com/bolun365" rel="nofollow noopener noreferrer"><i class="fab fa-fw fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 beck zhang. Published with GitHub Pages. All rights reserved. </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://www.mindgap.top/codes/OD-loss(YOLOX)/";  /* Replace PAGE_URL with your page's canonical URL variable */
+      this.page.identifier = "/codes/OD loss(YOLOX)"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
+    };
+    (function() { /* DON'T EDIT BELOW THIS LINE */
+      var d = document, s = d.createElement('script');
+      s.src = 'https://mindgap.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+  
+
+
+
+
+
+  </body>
+</html>
