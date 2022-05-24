@@ -70,4 +70,10 @@ var store = [{
         "tags": [],
         "url": "/codes/random_perspective%E4%BB%A3%E7%A0%81%E6%B3%A8%E9%87%8A%E7%89%88(yolox)/",
         "teaser": "/assets/basic/teaser_default.jpg"
+      },{
+        "title": "双色混合断层问题",
+        "excerpt":"断层效果展示 修复效果展示 数学原理(gamma=2) $\\frac{\\sqrt{x}+\\sqrt{y}}{2}\\leq\\sqrt{\\frac{x+y}{2}}$ 代码 import cv2 import math import numpy as np gamma = 2.5 a = np.ones([1000,100,3]) b = a.copy() c = a.copy() a[:,:,0]=0 a[:,:,1]=255 a[:,:,2]=0 b[:,:,0]=0 b[:,:,1]=0 b[:,:,2]=255 for row_ind, row in enumerate(c): for col_ind, col in enumerate(row): row[col_ind] = 1.0*a[row_ind][col_ind]*row_ind/1000+1.0*b[row_ind][col_ind]*(1000-row_ind)/1000 cv2.imwrite(\"1.png\", np.transpose(c, (1,0,2))) for row_ind, row...","categories": ["math"],
+        "tags": [],
+        "url": "/math/%E5%8F%8C%E8%89%B2%E6%B7%B7%E5%90%88%E6%96%AD%E5%B1%82%E9%97%AE%E9%A2%98/",
+        "teaser": "/assets/basic/teaser_default.jpg"
       }]
